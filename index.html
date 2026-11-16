@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Beckham's Sounds</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="Spin the globe and hear emergency vehicle sirens from around the world.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#071226">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Beckham's Sounds">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- HOME: the globe -->
+  <main id="home">
+    <header class="top">
+      <h1><span class="beacon">🚨</span> Beckham's Sounds</h1>
+      <div class="top-right">
+        <div class="passport" id="passport" aria-label="Countries visited"></div>
+        <button class="pill" id="open-garage">⭐ My Garage</button>
+      </div>
+    </header>
+
+    <div id="globe-wrap">
+      <canvas id="globe" aria-label="World globe"></canvas>
+      <div id="pins"></div>
+      <div class="hint" id="hint">👆 Spin the globe and tap a flag!</div>
+      <div class="zoom">
+        <button id="zoom-in" aria-label="Zoom in">+</button>
+        <button id="zoom-out" aria-label="Zoom out">−</button>
+      </div>
+    </div>
+
+    <nav id="flag-strip" aria-label="Countries"></nav>
+  </main>
+
+  <!-- STATION: one country's vehicles and sounds -->
+  <section id="station" class="sheet" aria-hidden="true">
+    <header class="sheet-top">
+      <button class="pill back" data-close>🌍 Globe</button>
+      <h2 id="station-title"></h2>
+      <button class="pill" data-garage>⭐ My Garage</button>
+    </header>
+    <div class="tabs" id="tabs"></div>
+    <div class="stage" id="stage">
+      <div class="says" id="says"></div>
+      <div class="vehicle" id="vehicle"></div>
+      <div class="road"></div>
+    </div>
+    <div class="pads" id="pads"></div>
+    <div class="actions">
+      <p class="fact" id="fact"></p>
+      <button class="big-btn drive" id="drive-by">🏁 Drive By!</button>
+      <button class="big-btn stop" id="stop">⏹ Stop</button>
+    </div>
+  </section>
+
+  <!-- GARAGE: favourite sounds -->
+  <section id="garage" class="sheet" aria-hidden="true">
+    <header class="sheet-top">
+      <button class="pill back" data-close>⬅ Back</button>
+      <h2>⭐ Beckham's Garage</h2>
+      <button class="pill stop-pill" id="garage-stop">⏹ Stop</button>
+    </header>
+    <div class="garage-grid" id="garage-grid"></div>
+  </section>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="vendor/d3.min.js"></script>
+  <script src="vendor/topojson-client.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/sirens.js"></script>
+  <script src="js/vehicles.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
