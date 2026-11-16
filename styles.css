@@ -539,6 +539,41 @@ h1 {
 .swatch { width: 46px; height: 46px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.45); padding: 0; }
 .swatch.on { border-color: var(--sun); box-shadow: 0 0 0 3px var(--sun); }
 
+/* ---------- real recordings + credits ---------- */
+.real {
+  position: absolute;
+  top: -7px;
+  left: 14px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--green);
+  color: #06281a;
+  font-size: 12px;
+  font-weight: 900;
+  font-style: normal;
+  pointer-events: none;
+}
+.credits-btn {
+  position: absolute;
+  left: 0;
+  bottom: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(7, 18, 38, 0.6);
+  border: 2px solid var(--line);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--soft);
+}
+#credits { z-index: 20; }
+.spacer { width: 96px; }
+.credits-body { max-width: 760px; width: 100%; margin: 0 auto; font-size: 16px; line-height: 1.5; user-select: text; -webkit-user-select: text; }
+.credits-body p { margin: 0 0 14px; color: var(--soft); text-wrap: pretty; }
+.credit { padding: 12px 14px; margin-bottom: 10px; border-radius: 16px; background: var(--card); }
+.credit b { display: block; font-size: 17px; }
+.credit span { display: block; color: var(--soft); font-size: 15px; overflow-wrap: anywhere; }
+
 /* ---------- toast ---------- */
 .toast {
   position: fixed;

@@ -1,9 +1,9 @@
 // All the countries, vehicles and sounds in the app.
 //
-// TO SWAP IN A REAL RECORDING: put the audio file in the "audio" folder and add
-//   file: 'audio/your-file.mp3'
-// to that sound (see the commented example on the USA fire wail). The recording is
-// used when it loads; the synthesized recipe stays as the backup.
+// REAL RECORDINGS: a sound with  file: 'audio/name.m4a'  plays that recording instead of the
+// synthesized recipe (the recipe stays as the backup if the file cannot load).
+//   loop: [start, end]  are the times in seconds the recording repeats between.
+// Use .m4a or .mp3 so it plays on an iPad, and add the source to CREDITS at the bottom.
 //
 // TO ADD A COUNTRY: copy one of the blocks below. "iso" is the country's ISO 3166
 // numeric code (it lights the country up on the globe) and "pin" is [longitude, latitude].
@@ -31,6 +31,7 @@
   // ---- shared looks ---------------------------------------------------------
   const RED = '#d9252a', WHITE = '#f7f9fc', BLUE = '#1f6fff', AMBER = '#ffb300';
   const snd = (id, name, icon, says, recipe) => ({ id, name, icon, says, ...recipe });
+  const real = (recipe, file, loop) => ({ ...recipe, file: 'audio/' + file, loop });
 
   window.COUNTRIES = [
     {
@@ -41,8 +42,8 @@
           label: 'Fire Department', call: '911',
           livery: { body: RED, top: WHITE, band: ['#ffd23f'], pattern: 'stripe', lights: [RED, WHITE], text: 'FIRE', textColor: '#ffd23f' },
           sounds: [
-            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail), // add:  file: 'audio/usa-fire-wail.mp3'
-            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', real(R.wail, 'usa-fire-wail.m4a', [0.09, 4.96])),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', real(R.yelp, 'usa-fire-yelp.m4a', [0.1, 2.746])),
             snd('mech', 'Mechanical Siren', '🌀', 'Rrrrr-EEEEE', R.mech),
             snd('horn', 'Air Horn', '📯', 'HOOONK!', R.airHorn),
           ],
@@ -221,15 +222,15 @@
           livery: { body: WHITE, band: ['#1c3f94', RED], pattern: 'stripe', lights: [BLUE, BLUE], text: 'POLICE', textColor: '#1c3f94' },
           sounds: [
             snd('police', 'Police Two-Tone', '🎶', 'Pin-pon-pin-pon', tones([[435, 0.5], [580, 0.5]])),
-            snd('gendarme', 'Gendarmerie', '🎵', 'Dee-DAH-dee-DAH', tones([[435, 0.5], [732, 0.5]])),
+            snd('gendarme', 'Gendarmerie', '🎵', 'Dee-DAH-dee-DAH', real(tones([[437, 0.55], [734, 0.55]]), 'france-gendarmerie.m4a', [0.1, 11.02])),
           ],
         },
         ems: {
           label: 'SAMU', call: '15',
           livery: { body: WHITE, band: ['#1c3f94'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'SAMU', textColor: '#1c3f94', symbol: '#1c3f94' },
           sounds: [
-            snd('samu', 'SAMU Two-Tone', '🎶', 'Dee-daa-dee-daa', tones([[435, 0.5], [651, 0.5]])),
-            snd('three', 'Three-Tone', '🎵', 'La-lee-la ... (rest)', tones([[420, 0.4], [516, 0.4], [420, 0.4], [0, 1.5]])),
+            snd('samu', 'SAMU Two-Tone', '🎶', 'Dee-daa-dee-daa', real(tones([[435, 0.5], [651, 0.5]]), 'france-ambulance-two-tone.m4a', [0.05, 7.05])),
+            snd('three', 'Three-Tone', '🎵', 'La-lee-la ... (rest)', real(tones([[420, 0.19], [516, 0.19], [420, 0.19], [0, 1.43]]), 'france-ambulance-three-tone.m4a', [0.05, 8.05])),
           ],
         },
       },
@@ -242,7 +243,9 @@
           label: 'Feuerwehr', call: '112',
           livery: { body: RED, band: ['#f6e500', WHITE], pattern: 'stripe', lights: [BLUE, BLUE], text: 'FEUERWEHR', textColor: WHITE },
           sounds: [
-            snd('air', 'Martinshorn (air)', '📯', 'Taa-TÜÜ-taa-TAA', tones([[410, 0.75], [547, 0.75]], { wave: 'sawtooth', lp: 2400, peak: 800, gain: 0.34 })),
+            snd('air', 'Martinshorn (air)', '📯', 'Taa-TÜÜ-taa-TAA', real(
+              tones([[513, 1.9], [384, 1.65], [513, 1.8], [384, 1.65], [0, 1.7]], { wave: 'sawtooth', lp: 2400, peak: 800, gain: 0.34 }),
+              'germany-fire-martinshorn.m4a', [0.1, 8.84])),
             snd('city', 'City Horn', '🎶', 'Tatü-tata', tones([[410, 0.75], [547, 0.75]])),
           ],
         },
@@ -250,7 +253,7 @@
           label: 'Polizei', call: '110',
           livery: { body: '#c9d1da', band: ['#1f5fd0'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'POLIZEI', textColor: '#1f5fd0' },
           sounds: [
-            snd('city', 'City Horn', '🎶', 'Tatü-tata', tones([[435, 0.75], [580, 0.75]])),
+            snd('city', 'City Horn', '🎶', 'Tatü-tata', real(tones([[458, 0.73], [611, 0.73]]), 'germany-police-martinshorn.m4a', [0.1, 11.8])),
             snd('country', 'Country Horn', '🎵', 'Taa-tüü (deeper)', tones([[362, 0.75], [483, 0.75]], { wave: 'sawtooth', lp: 2400, gain: 0.34 })),
           ],
         },
@@ -370,6 +373,22 @@
     'de/fire/air', 'de/police/city',
     'it/ems/bitonale',
     'jp/ems/piipoo', 'jp/fire/bell', 'jp/fire/kan',
+  ];
+
+  // Where the real recordings came from. Shown on the Credits screen.
+  window.CREDITS = [
+    { what: 'USA fire engine: Wail and Yelp', title: 'Whelen.ogg', by: 'Heggyhomolit', licence: 'CC0 1.0',
+      url: 'commons.wikimedia.org/wiki/File:Whelen.ogg' },
+    { what: 'Germany fire engine: Martinshorn (air)', title: 'WWS Fireenginesiren.ogg', by: 'Work With Sounds / Konrad Gutkowski',
+      licence: 'CC BY 4.0 (creativecommons.org/licenses/by/4.0)', url: 'commons.wikimedia.org/wiki/File:WWS_Fireenginesiren.ogg' },
+    { what: 'Germany police: City Horn', title: 'WWS Policecarsiren.ogg', by: 'Work With Sounds / Konrad Gutkowski',
+      licence: 'CC BY 4.0 (creativecommons.org/licenses/by/4.0)', url: 'commons.wikimedia.org/wiki/File:WWS_Policecarsiren.ogg' },
+    { what: 'France police: Gendarmerie', title: 'Gendarmerie, Outdoor Siren', by: 'BigSoundBank', licence: 'Royalty free (CC0-like)',
+      url: 'bigsoundbank.com/siren-french-gendarmerie-s0886.html' },
+    { what: 'France SAMU: Two-Tone', title: '2 Ton Siren', by: 'BigSoundBank', licence: 'Royalty free (CC0-like)',
+      url: 'bigsoundbank.com/ambulance-siren-2-s1464.html' },
+    { what: 'France SAMU: Three-Tone', title: 'Ambulance, 3 Ton Siren', by: 'BigSoundBank', licence: 'Royalty free (CC0-like)',
+      url: 'bigsoundbank.com/ambulance-siren-1-s1463.html' },
   ];
 
   window.SERVICES = [

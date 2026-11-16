@@ -14,7 +14,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" type="image/png" href="icons/icon-192.png">
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 
@@ -34,6 +34,7 @@
       <canvas id="globe" aria-label="World globe"></canvas>
       <div id="pins"></div>
       <div class="hint" id="hint">👆 Spin the globe and tap a flag!</div>
+      <button class="credits-btn" id="open-credits">ℹ️ Credits</button>
       <div class="zoom">
         <button id="zoom-in" aria-label="Zoom in">+</button>
         <button id="zoom-out" aria-label="Zoom out">−</button>
@@ -116,13 +117,23 @@
     </div>
   </section>
 
+  <!-- CREDITS: for grown-ups -->
+  <section id="credits" class="sheet" aria-hidden="true">
+    <header class="sheet-top">
+      <button class="pill back" data-close>⬅ Back</button>
+      <h2>ℹ️ Credits</h2>
+      <span class="spacer"></span>
+    </header>
+    <div class="credits-body" id="credits-body"></div>
+  </section>
+
   <div class="toast" id="toast"></div>
 
   <script src="vendor/d3.min.js"></script>
   <script src="vendor/topojson-client.min.js"></script>
-  <script src="js/data.js?v=4"></script>
-  <script src="js/sirens.js?v=4"></script>
-  <script src="js/vehicles.js?v=4"></script>
-  <script src="js/app.js?v=4"></script>
+  <script src="js/data.js?v=5"></script>
+  <script src="js/sirens.js?v=5"></script>
+  <script src="js/vehicles.js?v=5"></script>
+  <script src="js/app.js?v=5"></script>
 </body>
 </html>

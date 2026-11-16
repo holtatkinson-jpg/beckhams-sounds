@@ -1,11 +1,13 @@
 // Lets the app open with no internet. It always tries the network first (so updates
 // show up straight away) and falls back to the saved copy when offline.
-const CACHE = 'beckhams-sounds-v3';
+const CACHE = 'beckhams-sounds-v5';
 const CORE = [
   './', 'index.html', 'styles.css', 'manifest.webmanifest',
   'js/data.js', 'js/sirens.js', 'js/vehicles.js', 'js/app.js',
   'vendor/d3.min.js', 'vendor/topojson-client.min.js', 'vendor/countries-110m.json',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png',
+  'audio/usa-fire-wail.m4a', 'audio/usa-fire-yelp.m4a', 'audio/germany-fire-martinshorn.m4a', 'audio/germany-police-martinshorn.m4a',
+  'audio/france-gendarmerie.m4a', 'audio/france-ambulance-two-tone.m4a', 'audio/france-ambulance-three-tone.m4a',
 ];
 
 self.addEventListener('install', e => {

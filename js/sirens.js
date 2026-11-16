@@ -1,6 +1,6 @@
 // Siren sound engine. Every sound is built from a "recipe" (see data.js):
 //   { layers: [ {type:'sweep'|'tones'|'horn'|'mech'|'bell', ...} ] }   -> synthesized
-//   { file: 'audio/usa-fire-wail.mp3' }                                -> a real recording (loops)
+//   { file: 'audio/usa-fire-wail.m4a', loop: [start, end] }            -> a real recording, looping between two times (seconds)
 window.Sirens = (() => {
   const MAX_SECONDS = 20; // sounds stop by themselves after this long
 
@@ -133,8 +133,11 @@ window.Sirens = (() => {
     if (buffer) {
       const src = ctx.createBufferSource();
       src.buffer = buffer; src.loop = true;
+      const from = sound.loop ? sound.loop[0] : 0;
+      src.loopStart = from;
+      src.loopEnd = Math.min(sound.loop ? sound.loop[1] : buffer.duration, buffer.duration);
       if (src.detune) bend.connect(src.detune);
-      src.connect(out); src.start(t0);
+      src.connect(out); src.start(t0, from);
       nodes.push(src);
     } else {
       for (const L of sound.layers) LAYERS[L.type]({ ctx, out, osc, t0, dur, L });

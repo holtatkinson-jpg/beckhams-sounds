@@ -151,6 +151,7 @@
       const key = keyOf(cur, serviceId, sound);
       const fav = state.favs.includes(key);
       return `<div class="pad-wrap">
+        ${sound.file ? '<i class="real">🎙️ Real</i>' : ''}
         <button class="pad" data-key="${key}" data-play="${key}">
           <span class="ico">${sound.icon}</span>
           <span><b>${sound.name}</b><small>${sound.says}</small></span>
@@ -174,6 +175,18 @@
         ? '🏆 You visited every country!'
         : `🛂 New stamp: ${c.name}!`);
     }
+  }
+
+  function renderCredits() {
+    $('#credits-body').innerHTML = `
+      <p>For grown-ups. Sounds marked "🎙️ Real" are real recordings shared by the people below. Each one was trimmed so it repeats smoothly, converted to AAC and adjusted in volume. Every other sound is synthesized by the app.</p>
+      ${(window.CREDITS || []).map(c => `<div class="credit">
+        <b>${c.what}</b>
+        <span>"${c.title}" by ${c.by}</span>
+        <span>Licence: ${c.licence}</span>
+        <span>${c.url}</span>
+      </div>`).join('')}
+      <p>The globe is drawn with D3 and TopoJSON using Natural Earth map data.</p>`;
   }
 
   function openSheet(sel) {
@@ -214,6 +227,7 @@
     if ('close' in t.dataset) return closeSheet(t.closest('.sheet'));
     if ('garage' in t.dataset || t.id === 'open-garage') { Sirens.stop(); renderGarage(); return openSheet('#garage'); }
     if (t.id === 'open-game') { openSheet('#game'); return Game.start(); }
+    if (t.id === 'open-credits') { renderCredits(); return openSheet('#credits'); }
     if (t.dataset.choice) return Game.answer(+t.dataset.choice);
     if (t.id === 'next') return Game.next();
     if (t.id === 'play-again') return Game.start();

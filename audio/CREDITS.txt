@@ -1,0 +1,28 @@
+Real siren recordings used in Beckham's Sounds.
+Each file was trimmed to loop, converted to AAC and adjusted in volume.
+
+usa-fire-wail.m4a, usa-fire-yelp.m4a
+  From "Whelen.ogg" by Heggyhomolit. CC0 1.0.
+  https://commons.wikimedia.org/wiki/File:Whelen.ogg
+
+germany-fire-martinshorn.m4a
+  From "WWS Fireenginesiren.ogg" by Work With Sounds / Konrad Gutkowski. CC BY 4.0.
+  https://commons.wikimedia.org/wiki/File:WWS_Fireenginesiren.ogg
+  https://creativecommons.org/licenses/by/4.0/
+
+germany-police-martinshorn.m4a
+  From "WWS Policecarsiren.ogg" by Work With Sounds / Konrad Gutkowski. CC BY 4.0.
+  https://commons.wikimedia.org/wiki/File:WWS_Policecarsiren.ogg
+  https://creativecommons.org/licenses/by/4.0/
+
+france-gendarmerie.m4a
+  From "Gendarmerie, Outdoor Siren", BigSoundBank. Royalty free (CC0-like).
+  https://bigsoundbank.com/siren-french-gendarmerie-s0886.html
+
+france-ambulance-two-tone.m4a
+  From "2 Ton Siren", BigSoundBank. Royalty free (CC0-like).
+  https://bigsoundbank.com/ambulance-siren-2-s1464.html
+
+france-ambulance-three-tone.m4a
+  From "Ambulance, 3 Ton Siren", BigSoundBank. Royalty free (CC0-like).
+  https://bigsoundbank.com/ambulance-siren-1-s1463.html
