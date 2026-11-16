@@ -25,6 +25,7 @@
       <div class="top-right">
         <div class="passport" id="passport" aria-label="Countries visited"></div>
         <button class="pill" id="open-garage">⭐ My Garage</button>
+        <button class="pill play-pill" id="open-game">🎮 Play</button>
       </div>
     </header>
 
@@ -70,6 +71,16 @@
       <button class="pill stop-pill" id="garage-stop">⏹ Stop</button>
     </header>
     <div class="garage-grid" id="garage-grid"></div>
+  </section>
+
+  <!-- GAME: guess the siren -->
+  <section id="game" class="sheet" aria-hidden="true">
+    <header class="sheet-top">
+      <button class="pill back" data-close>⬅ Back</button>
+      <h2>🎮 Guess the Siren</h2>
+      <div class="passport" id="trophies" aria-label="Trophies"></div>
+    </header>
+    <div class="game-body" id="game-body"></div>
   </section>
 
   <div class="toast" id="toast"></div>

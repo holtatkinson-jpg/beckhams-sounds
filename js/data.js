@@ -362,6 +362,16 @@
     },
   ];
 
+  // Sounds that belong to one country only. The game uses these for "Which country?" questions.
+  window.SIGNATURE_SOUNDS = [
+    'us/fire/mech', 'us/police/rumble',
+    'gb/police/twotone', 'gb/ems/twotone',
+    'fr/fire/pinpon', 'fr/police/gendarme', 'fr/ems/three',
+    'de/fire/air', 'de/police/city',
+    'it/ems/bitonale',
+    'jp/ems/piipoo', 'jp/fire/bell', 'jp/fire/kan',
+  ];
+
   window.SERVICES = [
     { id: 'fire', emoji: '🚒', word: 'Fire' },
     { id: 'police', emoji: '🚓', word: 'Police' },

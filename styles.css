@@ -405,6 +405,92 @@ h1 {
 }
 .empty span { display: block; font-size: 64px; margin-bottom: 8px; }
 
+/* ---------- game ---------- */
+#game { z-index: 20; }
+.play-pill { background: rgba(53, 208, 127, 0.22); border-color: rgba(53, 208, 127, 0.75); }
+.game-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.dots { display: flex; gap: 10px; }
+.dot { width: 22px; height: 22px; border-radius: 50%; background: var(--card); border: 3px solid var(--line); }
+.dot.now { border-color: var(--sun); box-shadow: 0 0 12px rgba(255, 210, 63, 0.7); }
+.dot.right { background: var(--green); border-color: var(--green); }
+.dot.wrong { background: var(--red); border-color: var(--red); }
+.prompt { margin: 0; font-size: clamp(22px, 3.4vw, 34px); font-weight: 900; text-align: center; text-wrap: balance; }
+
+.mystery { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; width: 100%; }
+.speaker {
+  width: 190px;
+  min-height: 150px;
+  border-radius: 28px;
+  background: linear-gradient(180deg, #ffffff, #dfe9ff);
+  color: #10203f;
+  box-shadow: 0 6px 0 #7f95c4;
+  font-size: 60px;
+  line-height: 1.1;
+}
+.speaker small { display: block; font-size: 15px; font-weight: 800; color: #51638c; }
+.speaker:active { transform: translateY(3px); box-shadow: 0 3px 0 #7f95c4; }
+.speaker.on { background: linear-gradient(180deg, #fff3b8, var(--sun)); box-shadow: 0 6px 0 #c9971a, 0 0 26px rgba(255, 210, 63, 0.7); }
+.speaker.on .spk { display: inline-block; animation: beacon 0.5s ease-in-out infinite; }
+
+.reveal {
+  width: 300px;
+  max-width: 100%;
+  min-height: 150px;
+  padding: 10px 14px;
+  border-radius: 28px;
+  background: var(--card);
+  border: 3px dashed var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.reveal .q { font-size: 64px; line-height: 1; }
+.reveal svg { display: block; width: 200px; max-width: 100%; height: auto; overflow: visible; }
+.reveal b { display: block; font-size: 18px; font-weight: 900; }
+.reveal small { display: block; font-size: 15px; font-weight: 700; color: var(--soft); }
+.reveal.shown { border-style: solid; border-color: var(--sun); }
+
+.choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; }
+.choice {
+  min-height: 120px;
+  padding: 12px 8px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #ffffff, #dfe9ff);
+  color: #10203f;
+  box-shadow: 0 6px 0 #7f95c4;
+  text-align: center;
+}
+.choice .ico { display: block; font-size: 46px; line-height: 1.15; }
+.choice b { display: block; font-size: 21px; font-weight: 900; overflow-wrap: anywhere; }
+.choice:active { transform: translateY(3px); box-shadow: 0 3px 0 #7f95c4; }
+.choice[disabled] { opacity: 0.55; }
+.choice.right { opacity: 1; background: linear-gradient(180deg, #b9f7d2, var(--green)); box-shadow: 0 6px 0 #1c8a50; }
+.choice.wrong { opacity: 1; background: linear-gradient(180deg, #ffc0c0, var(--red)); box-shadow: 0 6px 0 #a82525; color: #fff; animation: shake 0.35s; }
+@keyframes shake { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+
+.game-foot { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; min-height: 64px; }
+.verdict { margin: 0; font-size: 24px; font-weight: 900; text-align: center; }
+.big-btn.next { background: linear-gradient(180deg, #fff3b8, var(--sun)); box-shadow: 0 5px 0 #c9971a; }
+
+.result { text-align: center; }
+.result .big { font-size: 84px; line-height: 1.1; }
+.result h3 { margin: 6px 0; font-size: clamp(28px, 5vw, 44px); font-weight: 900; text-wrap: balance; }
+.result p { margin: 0 0 18px; font-size: 22px; font-weight: 800; color: var(--soft); }
+.result .stars { font-size: 44px; letter-spacing: 6px; margin-bottom: 10px; }
+.result .stars .off { filter: grayscale(1) opacity(0.35); }
+
 /* ---------- toast ---------- */
 .toast {
   position: fixed;
@@ -436,6 +522,11 @@ h1 {
   .fact { flex-basis: 100%; }
   .big-btn { flex: 1; }
   .pads { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .choices { grid-template-columns: 1fr; }
+  .choice { min-height: 72px; display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .choice .ico { font-size: 34px; }
+  .speaker { width: 150px; min-height: 120px; font-size: 46px; }
+  .reveal { min-height: 120px; }
 }
 
 @media (max-height: 560px) and (orientation: landscape) {

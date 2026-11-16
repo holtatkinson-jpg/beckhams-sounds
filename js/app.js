@@ -7,8 +7,8 @@
   const state = (() => {
     try {
       const s = JSON.parse(localStorage.getItem(STORE)) || {};
-      return { visited: s.visited || [], favs: s.favs || [] };
-    } catch (e) { return { visited: [], favs: [] }; }
+      return { visited: s.visited || [], favs: s.favs || [], trophies: s.trophies || 0 };
+    } catch (e) { return { visited: [], favs: [], trophies: 0 }; }
   })();
   const save = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} };
 
@@ -63,6 +63,7 @@
     stage.classList.toggle('playing', here);
     $('#vehicle').classList.toggle('lights-on', here);
     if (here) $('#says').textContent = `“${findSound(playingKey).sound.says}”`;
+    Game.paint();
   }
 
   function driveBy() {
@@ -198,6 +199,10 @@
     if (t.dataset.country) return Globe.visit(byId[t.dataset.country]);
     if ('close' in t.dataset) return closeSheet(t.closest('.sheet'));
     if ('garage' in t.dataset || t.id === 'open-garage') { Sirens.stop(); renderGarage(); return openSheet('#garage'); }
+    if (t.id === 'open-game') { openSheet('#game'); return Game.start(); }
+    if (t.dataset.choice) return Game.answer(+t.dataset.choice);
+    if (t.id === 'next') return Game.next();
+    if (t.id === 'play-again') return Game.start();
     if (t.id === 'drive-by') return driveBy();
     if (t.id === 'stop' || t.id === 'garage-stop') return Sirens.stop();
     if (t.id === 'zoom-in') return Globe.zoomBy(1.35);
@@ -427,6 +432,164 @@
       zoomBy: f => { zoom = clamp(zoom * f, 0.8, 4); lastTouch = performance.now(); dirty = true; },
       zoomOut: () => { lastTouch = performance.now(); flyTo([rot[0], rot[1]], 1, 600); },
     };
+  })();
+
+  // ---------- Guess the Siren game ----------
+  const Game = (() => {
+    const ROUND = 5;
+    const KINDS = {
+      wail: ['🌊', 'Wail'], yelp: ['⚡', 'Yelp'], phaser: ['✨', 'Phaser'], rumble: ['💥', 'Rumble'],
+      tones: ['🎶', 'Two-Tone'], horn: ['📯', 'Horn'], mech: ['🌀', 'Mechanical'], bell: ['🔔', 'Bell'],
+    };
+    // works out what kind of siren a recipe is, so the answers are never ambiguous
+    function kindOf(sound) {
+      if (!sound.layers || sound.layers.length !== 1) return null;
+      const L = sound.layers[0];
+      if (L.type === 'sweep') {
+        const period = L.up + L.down;
+        return L.hi < 500 ? 'rumble' : period < 0.1 ? 'phaser' : period < 1 ? 'yelp' : 'wail';
+      }
+      if (L.type === 'tones') return L.seq.length === 2 ? 'tones' : null;
+      return KINDS[L.type] ? L.type : null;
+    }
+
+    const all = [], byKind = {};
+    for (const c of COUNTRIES) {
+      for (const s of SERVICES) {
+        const svc = c.services[s.id];
+        for (const sound of svc.sounds) {
+          const item = { key: keyOf(c, s.id, sound), c, sid: s.id, svc, sound, kind: kindOf(sound) };
+          all.push(item);
+          if (item.kind) (byKind[item.kind] = byKind[item.kind] || []).push(item);
+        }
+      }
+    }
+    const signatures = (window.SIGNATURE_SOUNDS || []).map(k => all.find(a => a.key === k)).filter(Boolean);
+
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+    const shuffle = arr => {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+
+    let q = null, results = [], answered = false, used = new Set();
+    const body = $('#game-body');
+
+    function makeQuestion() {
+      let item, type;
+      for (let tries = 0; tries < 30; tries++) {
+        type = signatures.length && Math.random() < 0.5 ? 'country' : 'kind';
+        item = type === 'country' ? pick(signatures) : pick(byKind[pick(Object.keys(byKind))]);
+        if (!used.has(item.key)) break;
+      }
+      used.add(item.key);
+      if (type === 'country') {
+        const others = shuffle(COUNTRIES.filter(c => c !== item.c)).slice(0, 2);
+        return {
+          item, prompt: 'Which country is this siren from?',
+          options: shuffle([item.c, ...others]).map(c => ({ icon: c.flag, label: c.name, right: c === item.c })),
+        };
+      }
+      const others = shuffle(Object.keys(byKind).filter(k => k !== item.kind)).slice(0, 2);
+      return {
+        item, prompt: 'What kind of siren is this?',
+        options: shuffle([item.kind, ...others]).map(k => ({ icon: KINDS[k][0], label: KINDS[k][1], right: k === item.kind })),
+      };
+    }
+
+    function paintTrophies() {
+      $('#trophies').innerHTML = `🏆 <span>${state.trophies}</span>`;
+    }
+
+    function renderQuestion() {
+      const dots = Array.from({ length: ROUND }, (_, i) =>
+        `<span class="dot ${i < results.length ? (results[i] ? 'right' : 'wrong') : i === results.length ? 'now' : ''}"></span>`).join('');
+      body.innerHTML = `
+        <div class="dots" aria-label="Question ${results.length + 1} of ${ROUND}">${dots}</div>
+        <p class="prompt">${q.prompt}</p>
+        <div class="mystery">
+          <button class="speaker" id="replay" data-play="${q.item.key}"><span class="spk">🔊</span><small>Tap to hear it again</small></button>
+          <div class="reveal" id="reveal"><span class="q">❓</span><small>Listen carefully...</small></div>
+        </div>
+        <div class="choices">${q.options.map((o, i) =>
+          `<button class="choice" data-choice="${i}"><span class="ico">${o.icon}</span><b>${o.label}</b></button>`).join('')}</div>
+        <div class="game-foot"><p class="verdict" id="verdict"></p></div>`;
+    }
+
+    function ask() {
+      q = makeQuestion();
+      answered = false;
+      renderQuestion();
+      playKey(q.item.key, { toggle: false });
+      paint();
+    }
+
+    function start() {
+      results = [];
+      used = new Set();
+      paintTrophies();
+      ask();
+    }
+
+    function answer(i) {
+      if (answered || !q) return;
+      answered = true;
+      const ok = !!q.options[i].right;
+      results.push(ok);
+      const { c, sid, svc, sound } = q.item;
+      body.querySelectorAll('.choice').forEach((el, n) => {
+        el.disabled = true;
+        if (q.options[n].right) el.classList.add('right');
+        else if (n === i) el.classList.add('wrong');
+      });
+      const dot = body.querySelectorAll('.dot')[results.length - 1];
+      dot.className = 'dot ' + (ok ? 'right' : 'wrong');
+      const right = q.options.find(o => o.right);
+      $('#verdict').textContent = ok
+        ? pick(['🎉 Yes! You got it!', '🎉 Brilliant ears!', '🎉 Correct!', '🎉 Nice one!'])
+        : `Not quite. It was ${right.icon} ${right.label}`;
+      const reveal = $('#reveal');
+      reveal.classList.add('shown');
+      reveal.innerHTML = `${vehicleSVG(sid, svc.livery)}<b>${c.flag} ${c.name} · ${svc.label}</b><small>${sound.icon} ${sound.name}: “${sound.says}”</small>`;
+      const last = results.length === ROUND;
+      body.querySelector('.game-foot').insertAdjacentHTML('beforeend',
+        `<button class="big-btn next" id="next">${last ? 'See my score ▶' : 'Next ▶'}</button>`);
+      paint();
+    }
+
+    function next() {
+      if (!answered) return;
+      if (results.length < ROUND) return ask();
+      Sirens.stop();
+      q = null;
+      const score = results.filter(Boolean).length;
+      if (score === ROUND) { state.trophies++; save(); paintTrophies(); }
+      const stars = results.map(ok => `<span class="${ok ? '' : 'off'}">⭐</span>`).join('');
+      const [face, line] = score === ROUND ? ['🏆', 'Perfect! You won a trophy!']
+        : score >= 3 ? ['😃', 'Great listening!']
+        : ['🚨', 'Keep practising. Visit the stations to learn the sounds!'];
+      body.innerHTML = `<div class="result">
+        <div class="big">${face}</div>
+        <div class="stars">${stars}</div>
+        <h3>You got ${score} out of ${ROUND}!</h3>
+        <p>${line}</p>
+        <button class="big-btn drive" id="play-again">🔁 Play again</button>
+      </div>`;
+    }
+
+    // keeps the speaker button and the revealed vehicle in step with what is playing
+    function paint() {
+      if (!q) return;
+      const on = playingKey === q.item.key;
+      const spk = $('#replay'), reveal = $('#reveal');
+      if (spk) spk.classList.toggle('on', on);
+      if (reveal) reveal.classList.toggle('lights-on', on && answered);
+    }
+
+    return { start, answer, next, paint };
   })();
 
   paintVisited();
