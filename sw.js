@@ -1,6 +1,6 @@
 // Lets the app open with no internet. It always tries the network first (so updates
 // show up straight away) and falls back to the saved copy when offline.
-const CACHE = 'beckhams-sounds-v1';
+const CACHE = 'beckhams-sounds-v3';
 const CORE = [
   './', 'index.html', 'styles.css', 'manifest.webmanifest',
   'js/data.js', 'js/sirens.js', 'js/vehicles.js', 'js/app.js',
@@ -9,7 +9,7 @@ const CORE = [
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE.map(url => new Request(url, { cache: 'no-cache' })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {
@@ -23,7 +23,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET' || !e.request.url.startsWith(self.location.origin)) return;
   e.respondWith(
-    fetch(e.request)
+    fetch(e.request, { cache: 'no-cache' }) // always check the server for a newer copy
       .then(res => {
         if (res.ok) {
           const copy = res.clone();
