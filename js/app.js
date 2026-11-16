@@ -7,8 +7,11 @@
   const state = (() => {
     try {
       const s = JSON.parse(localStorage.getItem(STORE)) || {};
-      return { visited: s.visited || [], favs: s.favs || [], trophies: s.trophies || 0 };
-    } catch (e) { return { visited: [], favs: [], trophies: 0 }; }
+      return {
+        visited: s.visited || [], favs: s.favs || [], trophies: s.trophies || 0,
+        custom: s.custom || [], customSeq: s.customSeq || 0, maker: s.maker || null,
+      };
+    } catch (e) { return { visited: [], favs: [], trophies: 0, custom: [], customSeq: 0, maker: null }; }
   })();
   const save = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} };
 
@@ -16,6 +19,7 @@
   const keyOf = (c, serviceId, sound) => `${c.id}/${serviceId}/${sound.id}`;
   function findSound(key) {
     const [cid, sid, nid] = key.split('/');
+    if (cid === 'my') return findCustom(nid);
     const c = byId[cid], svc = c && c.services[sid];
     const sound = svc && svc.sounds.find(s => s.id === nid);
     return sound ? { c, sid, svc, sound } : null;
@@ -38,10 +42,10 @@
   const DRIVE_SECONDS = 5;
   const stage = $('#stage');
 
-  function playKey(key, { toggle = true } = {}) {
+  function playKey(key, { toggle = true, restart = false } = {}) {
     const hit = findSound(key);
     if (!hit) return;
-    if (playingKey === key) {
+    if (playingKey === key && !restart) {
       if (toggle) Sirens.stop();
       return;
     }
@@ -64,30 +68,40 @@
     $('#vehicle').classList.toggle('lights-on', here);
     if (here) $('#says').textContent = `“${findSound(playingKey).sound.says}”`;
     Game.paint();
+    Maker.paint();
   }
 
-  function driveBy() {
+  let driveStage = null;
+  function stationDriveBy() {
     const svc = cur.services[serviceId];
     const mine = playingKey && playingKey.startsWith(`${cur.id}/${serviceId}/`);
-    const key = mine ? playingKey : (lastKey || keyOf(cur, serviceId, svc.sounds[0]));
+    driveBy(stage, mine ? playingKey : (lastKey || keyOf(cur, serviceId, svc.sounds[0])));
+  }
+  function driveBy(el, key) {
     endDrive();
     playKey(key, { toggle: false });
     Sirens.driveBy(DRIVE_SECONDS);
-    stage.style.setProperty('--drive-time', DRIVE_SECONDS + 's');
-    void stage.offsetWidth; // restart the animation
-    stage.classList.add('driving');
+    driveStage = el;
+    el.style.setProperty('--drive-time', DRIVE_SECONDS + 's');
+    void el.offsetWidth; // restart the animation
+    el.classList.add('driving');
     driveTimer = setTimeout(() => Sirens.stop(), DRIVE_SECONDS * 1000);
   }
   function endDrive() {
     clearTimeout(driveTimer);
-    stage.classList.remove('driving');
+    if (driveStage) driveStage.classList.remove('driving');
   }
 
   // ---------- favourites ----------
   function toggleFav(key) {
     const i = state.favs.indexOf(key);
-    if (i >= 0) state.favs.splice(i, 1);
-    else { state.favs.push(key); toast('⭐ Parked in your garage!'); }
+    if (i >= 0) {
+      state.favs.splice(i, 1);
+      if (key.startsWith('my/')) { // a siren he made himself: taking it out deletes it
+        if (playingKey === key) Sirens.stop();
+        state.custom = state.custom.filter(m => `my/${m.kind}/${m.id}` !== key);
+      }
+    } else { state.favs.push(key); toast('⭐ Parked in your garage!'); }
     save();
     document.querySelectorAll(`.pad-wrap .star[data-key="${key}"]`).forEach(el => el.classList.toggle('on', i < 0));
     renderGarage();
@@ -203,10 +217,20 @@
     if (t.dataset.choice) return Game.answer(+t.dataset.choice);
     if (t.id === 'next') return Game.next();
     if (t.id === 'play-again') return Game.start();
-    if (t.id === 'drive-by') return driveBy();
+    if (t.id === 'drive-by') return stationDriveBy();
+    if (t.id === 'open-maker') { openSheet('#maker'); return Maker.open(); }
+    if (t.dataset.mk) { const [k, v] = t.dataset.mk.split('='); return Maker.set(k, v); }
+    if (t.id === 'maker-play') return Maker.toggle();
+    if (t.id === 'maker-drive') return driveBy($('#maker-stage'), LIVE);
+    if (t.id === 'maker-save') return Maker.keep();
+    if (t.id === 'maker-random') return Maker.random();
     if (t.id === 'stop' || t.id === 'garage-stop') return Sirens.stop();
     if (t.id === 'zoom-in') return Globe.zoomBy(1.35);
     if (t.id === 'zoom-out') return Globe.zoomBy(1 / 1.35);
+  });
+
+  document.addEventListener('input', e => {
+    if (e.target.matches('#maker input[type="range"]')) Maker.slide(e.target);
   });
 
   document.addEventListener('keydown', e => {
@@ -431,6 +455,142 @@
       redraw: () => { dirty = true; },
       zoomBy: f => { zoom = clamp(zoom * f, 0.8, 4); lastTouch = performance.now(); dirty = true; },
       zoomOut: () => { lastTouch = performance.now(); flyTo([rot[0], rot[1]], 1, 600); },
+    };
+  })();
+
+  // ---------- Siren Maker ----------
+  const MY = { id: 'my', flag: '🛠️', name: "Beckham's own" };
+  const LIVE = 'my/x/live'; // the siren currently on the maker's sliders
+  const MAX_CUSTOM = 12;
+
+  // turns the maker's settings into a sound recipe the engine can play
+  function makerRecipe(m) {
+    const lo = m.lo, hi = Math.max(m.hi, m.lo + 30), k = m.speed / 100;
+    const gain = { square: 0.3, sawtooth: 0.34, triangle: 0.4 }[m.wave] || 0.3;
+    if (m.type === 'tones') {
+      const len = 1.2 * Math.pow(0.1 / 1.2, k);
+      return { layers: [{ type: 'tones', seq: [[lo, len], [hi, len]], wave: m.wave, gain }] };
+    }
+    if (m.type === 'horn') {
+      const on = 1.6 * Math.pow(0.12 / 1.6, k);
+      return { layers: [{ type: 'horn', freqs: [lo / 2, hi / 2], pattern: [[on, on * 0.4]], gain: 0.16 }] };
+    }
+    const period = 6 * Math.pow(0.06 / 6, k);
+    return { layers: [{ type: 'sweep', lo, hi, up: period * 0.4, down: period * 0.6, wave: m.wave, gain }] };
+  }
+
+  function makerLivery(m) {
+    const pale = ['#f6e500', '#f7f9fc'].includes(m.body);
+    return {
+      body: m.body, pattern: 'stripe',
+      band: [m.body === '#f7f9fc' ? '#d9252a' : '#f7f9fc'],
+      lights: m.kind === 'ems' ? ['#1f6fff', '#1f6fff'] : m.kind === 'police' ? ['#d9252a', '#1f6fff'] : ['#d9252a', '#f7f9fc'],
+      text: 'BECKHAM', textColor: pale ? '#16181d' : '#f7f9fc',
+      symbol: m.kind === 'ems' ? (pale ? '#1f6fff' : '#f7f9fc') : undefined,
+    };
+  }
+
+  function findCustom(nid) {
+    const live = nid === 'live';
+    const m = live ? Maker.settings() : state.custom.find(x => String(x.id) === nid);
+    if (!m) return null;
+    return {
+      c: MY, sid: m.kind,
+      svc: { label: 'Siren Maker', livery: makerLivery(m) },
+      sound: { id: nid, name: live ? 'My Siren' : `My Siren ${m.id}`, icon: '🎛️', says: 'Made by Beckham', ...makerRecipe(m) },
+    };
+  }
+
+  const Maker = (() => {
+    const TYPES = [['sweep', '🌊 Sweep'], ['tones', '🎶 Two-Tone'], ['horn', '📯 Horn']];
+    const WAVES = [['square', 'Sharp'], ['sawtooth', 'Buzzy'], ['triangle', 'Soft']];
+    const KINDS = [['fire', '🚒'], ['police', '🚓'], ['ems', '🚑']];
+    const COLOURS = ['#d9252a', '#ff7a1a', '#f6e500', '#1f9d55', '#1f6fff', '#7a3cff', '#16181d', '#f7f9fc'];
+    const m = Object.assign(
+      { type: 'sweep', lo: 560, hi: 1400, speed: 20, wave: 'square', kind: 'fire', body: '#d9252a' },
+      state.maker);
+    let timer = 0;
+
+    const seg = (id, list, key) => {
+      $(id).innerHTML = list.map(([v, label]) =>
+        `<button class="seg-btn ${m[key] === v ? 'on' : ''}" data-mk="${key}=${v}" aria-pressed="${m[key] === v}">${label}</button>`).join('');
+    };
+
+    function render() {
+      seg('#maker-type', TYPES, 'type');
+      seg('#maker-wave', WAVES, 'wave');
+      seg('#maker-kind', KINDS, 'kind');
+      $('#maker-colors').innerHTML = COLOURS.map(c =>
+        `<button class="swatch ${m.body === c ? 'on' : ''}" data-mk="body=${c}" style="background:${c}" aria-label="Vehicle colour"></button>`).join('');
+      for (const k of ['lo', 'hi', 'speed']) $('#mk-' + k).value = m[k];
+      labels();
+      $('#maker-vehicle').innerHTML = vehicleSVG(m.kind, makerLivery(m));
+      paint();
+    }
+
+    function labels() {
+      $('#mk-lo-val').textContent = m.lo + ' Hz';
+      $('#mk-hi-val').textContent = Math.max(m.hi, m.lo + 30) + ' Hz';
+      $('#mk-speed-val').textContent = 1 + Math.round(m.speed / 11.2);
+    }
+
+    // remember the settings, and replay so he hears the change straight away
+    function changed(replay) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        state.maker = { ...m };
+        save();
+        if (replay && $('#maker').classList.contains('open')) playKey(LIVE, { restart: true });
+      }, 90);
+    }
+
+    function set(k, v) {
+      m[k] = v;
+      render();
+      changed(k === 'type' || k === 'wave');
+    }
+
+    function slide(el) {
+      m[el.dataset.k] = +el.value;
+      labels();
+      changed(true);
+    }
+
+    function random() {
+      const pick = list => list[Math.floor(Math.random() * list.length)];
+      m.type = pick(TYPES)[0];
+      m.wave = pick(WAVES)[0];
+      m.kind = pick(KINDS)[0];
+      m.body = pick(COLOURS);
+      m.lo = 200 + Math.round(Math.random() * 60) * 10;
+      m.hi = Math.min(2000, m.lo + 150 + Math.round(Math.random() * 90) * 10);
+      m.speed = Math.round(Math.random() * 100);
+      render();
+      changed(true);
+    }
+
+    function keep() {
+      if (state.custom.length >= MAX_CUSTOM) return toast('🅿️ Your garage has 12 of your sirens. Take one out first!');
+      const id = ++state.customSeq;
+      state.custom.push({ ...m, id });
+      state.favs.push(`my/${m.kind}/${id}`);
+      state.maker = { ...m };
+      save();
+      renderGarage();
+      toast(`⭐ My Siren ${id} is parked in your garage!`);
+    }
+
+    function paint() {
+      const on = playingKey === LIVE;
+      $('#maker-stage').classList.toggle('playing', on);
+      $('#maker-vehicle').classList.toggle('lights-on', on);
+      $('#maker-play').textContent = on ? '⏹ Stop' : '▶ Play';
+    }
+
+    return {
+      open: render, set, slide, random, keep, paint,
+      toggle: () => playKey(LIVE),
+      settings: () => m,
     };
   })();
 

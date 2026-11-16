@@ -14,7 +14,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" type="image/png" href="icons/icon-192.png">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
 
@@ -26,6 +26,7 @@
         <div class="passport" id="passport" aria-label="Countries visited"></div>
         <button class="pill" id="open-garage">⭐ My Garage</button>
         <button class="pill play-pill" id="open-game">🎮 Play</button>
+        <button class="pill make-pill" id="open-maker">🎛️ Make</button>
       </div>
     </header>
 
@@ -83,13 +84,45 @@
     <div class="game-body" id="game-body"></div>
   </section>
 
+  <!-- MAKER: build your own siren -->
+  <section id="maker" class="sheet" aria-hidden="true">
+    <header class="sheet-top">
+      <button class="pill back" data-close>⬅ Back</button>
+      <h2>🎛️ Siren Maker</h2>
+      <button class="pill" id="maker-random">🎲 Surprise me</button>
+    </header>
+    <div class="stage" id="maker-stage">
+      <div class="vehicle" id="maker-vehicle"></div>
+      <div class="road"></div>
+    </div>
+    <div class="seg" id="maker-type"></div>
+    <div class="sliders">
+      <label class="slider"><span>🐻 Low note <b id="mk-lo-val"></b></span>
+        <input type="range" id="mk-lo" data-k="lo" min="200" max="900" step="10"></label>
+      <label class="slider"><span>🐭 High note <b id="mk-hi-val"></b></span>
+        <input type="range" id="mk-hi" data-k="hi" min="400" max="2000" step="10"></label>
+      <label class="slider"><span>🐢 Speed 🐇 <b id="mk-speed-val"></b></span>
+        <input type="range" id="mk-speed" data-k="speed" min="0" max="100" step="1"></label>
+    </div>
+    <div class="maker-opts">
+      <div class="seg small" id="maker-wave"></div>
+      <div class="seg small" id="maker-kind"></div>
+      <div class="swatches" id="maker-colors"></div>
+    </div>
+    <div class="actions">
+      <button class="big-btn next" id="maker-play">▶ Play</button>
+      <button class="big-btn drive" id="maker-drive">🏁 Drive By!</button>
+      <button class="big-btn save" id="maker-save">⭐ Save to Garage</button>
+    </div>
+  </section>
+
   <div class="toast" id="toast"></div>
 
   <script src="vendor/d3.min.js"></script>
   <script src="vendor/topojson-client.min.js"></script>
-  <script src="js/data.js?v=3"></script>
-  <script src="js/sirens.js?v=3"></script>
-  <script src="js/vehicles.js?v=3"></script>
-  <script src="js/app.js?v=3"></script>
+  <script src="js/data.js?v=4"></script>
+  <script src="js/sirens.js?v=4"></script>
+  <script src="js/vehicles.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
 </body>
 </html>
