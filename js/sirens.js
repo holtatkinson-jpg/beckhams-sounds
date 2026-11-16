@@ -1,6 +1,7 @@
 // Siren sound engine. Every sound is built from a "recipe" (see data.js):
 //   { layers: [ {type:'sweep'|'tones'|'horn'|'mech'|'bell', ...} ] }   -> synthesized
 //   { file: 'audio/usa-fire-wail.m4a', loop: [start, end] }            -> a real recording, looping between two times (seconds)
+//   { file: 'audio/drive-past.m4a', once: true }                       -> a real recording that plays through one time, then stops
 window.Sirens = (() => {
   const MAX_SECONDS = 20; // sounds stop by themselves after this long
 
@@ -132,7 +133,7 @@ window.Sirens = (() => {
     };
     if (buffer) {
       const src = ctx.createBufferSource();
-      src.buffer = buffer; src.loop = true;
+      src.buffer = buffer; src.loop = !sound.once;
       const from = sound.loop ? sound.loop[0] : 0;
       src.loopStart = from;
       src.loopEnd = Math.min(sound.loop ? sound.loop[1] : buffer.duration, buffer.duration);
@@ -191,7 +192,8 @@ window.Sirens = (() => {
     const voice = build(ctx, sound, ctx.currentTime + 0.02, MAX_SECONDS, buffer);
     voice.out.connect(dist);
     Object.assign(current, voice);
-    stopTimer = setTimeout(stop, MAX_SECONDS * 1000);
+    const life = buffer && sound.once ? Math.min(MAX_SECONDS, buffer.duration) : MAX_SECONDS;
+    stopTimer = setTimeout(stop, life * 1000);
     if (current.pendingDrive) driveBy(current.pendingDrive);
   }
 

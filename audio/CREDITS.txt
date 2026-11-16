@@ -48,3 +48,17 @@ sweden-fire-1958.m4a
   https://commons.wikimedia.org/wiki/File:WWS_FiretruckFordF600-19588211sirens.ogg
 
 CC BY 4.0 licence: https://creativecommons.org/licenses/by/4.0/
+
+netherlands-ambulance-passing.m4a, netherlands-ambulance-arriving.m4a, netherlands-ambulance-horn.m4a
+  From "Het voorbijrijden van een ambulance met sirene", "Het aankomen en stoppen van een ambulance met sirene"
+  and "Hoorn van een ambulance" by Beeld en Geluid (Netherlands Institute for Sound and Vision), 1981. CC BY-SA 3.0.
+  These three trimmed and levelled clips are shared under the same licence, CC BY-SA 3.0.
+  https://commons.wikimedia.org/wiki/File:Het_voorbijrijden_van_een_ambulance_met_sirene_-_SoundCloud_-_Beeld_en_Geluid.ogg
+  https://commons.wikimedia.org/wiki/File:Het_aankomen_en_stoppen_van_een_ambulance_met_sirene_-_SoundCloud_-_Beeld_en_Geluid.ogg
+  https://commons.wikimedia.org/wiki/File:Hoorn_van_een_ambulance_-_SoundCloud_-_Beeld_en_Geluid.ogg
+  https://creativecommons.org/licenses/by-sa/3.0/
+
+netherlands-fire-passing.m4a
+  From "Brandweerwagens passeren met sirene" by GvNL-Steim Workshop (recorded by Robin Koek). CC BY 3.0.
+  https://commons.wikimedia.org/wiki/File:Brandweerwagens_passeren_met_sirene_-_SoundCloud_-_GvNL-Steim_Workshop.ogg
+  https://creativecommons.org/licenses/by/3.0/

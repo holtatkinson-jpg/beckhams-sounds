@@ -3,6 +3,7 @@
 // REAL RECORDINGS: a sound with  file: 'audio/name.m4a'  plays that recording instead of the
 // synthesized recipe (the recipe stays as the backup if the file cannot load).
 //   loop: [start, end]  are the times in seconds the recording repeats between.
+//   once: true          plays the recording through one time instead (for drive-past clips).
 // Use .m4a or .mp3 so it plays on an iPad, and add the source to CREDITS at the bottom.
 //
 // TO ADD A COUNTRY: copy one of the blocks below. "iso" is the country's ISO 3166
@@ -32,6 +33,9 @@
   const RED = '#d9252a', WHITE = '#f7f9fc', BLUE = '#1f6fff', AMBER = '#ffb300';
   const snd = (id, name, icon, says, recipe) => ({ id, name, icon, says, ...recipe });
   const real = (recipe, file, loop) => ({ ...recipe, file: 'audio/' + file, loop });
+  const once = (recipe, file) => ({ ...recipe, file: 'audio/' + file, once: true });
+  const dutchThree = tones([[689, 0.7], [588, 0.7], [689, 0.7], [408, 0.7]], { wave: 'sawtooth', lp: 2600 });
+  const dutchTwo = tones([[377, 0.75], [505, 0.75]], { wave: 'sawtooth', lp: 2600 });
 
   window.COUNTRIES = [
     {
@@ -407,6 +411,30 @@
         },
       },
     },
+    {
+      id: 'nl', iso: '528', name: 'Netherlands', flag: '🇳🇱', pin: [5.3, 52.2],
+      fact: 'Dutch firefighters are called "Brandweer". The ambulance sounds here were recorded back in 1981!',
+      services: {
+        fire: {
+          label: 'Brandweer', call: '112',
+          livery: { body: RED, band: [WHITE, '#1f5fd0'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'BRANDWEER', textColor: WHITE },
+          sounds: [
+            snd('pass', 'Fire Trucks Driving Past', '💨', 'Taa-tuu-taa-tuu... whoosh!', once(dutchTwo, 'netherlands-fire-passing.m4a')),
+            snd('twotone', 'Two-Tone Horn', '🎶', 'Taa-tuu', dutchTwo),
+          ],
+        },
+        ems: {
+          label: 'Ambulance', call: '112',
+          livery: { body: '#f6e500', band: [RED, '#1f5fd0'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'AMBULANCE', textColor: '#16181d', symbol: '#1f5fd0' },
+          sounds: [
+            snd('pass', 'Driving Past', '💨', 'Tee-taa-tee-too... whoosh!', once(dutchThree, 'netherlands-ambulance-passing.m4a')),
+            snd('arrive', 'Arriving', '🛑', 'Tee-taa-tee-too... stop!', once(dutchThree, 'netherlands-ambulance-arriving.m4a')),
+            snd('inside', 'Horn From Inside', '📯', "Heard from the driver's seat", once(dutchThree, 'netherlands-ambulance-horn.m4a')),
+            snd('three', 'Three-Tone Horn', '🎶', 'Tee-taa-tee-too', dutchThree),
+          ],
+        },
+      },
+    },
   ];
 
   // Sounds that belong to one country only. The game uses these for "Which country?" questions.
@@ -417,7 +445,7 @@
     'de/fire/air', 'de/police/city',
     'it/ems/bitonale',
     'jp/ems/piipoo', 'jp/fire/bell', 'jp/fire/kan',
-    'si/police/main',
+    'si/police/main', 'nl/ems/three',
   ];
 
   // Where the real recordings came from. Shown on the Credits screen.
@@ -443,6 +471,14 @@
       licence: 'CC BY 4.0 (creativecommons.org/licenses/by/4.0)', url: 'commons.wikimedia.org/wiki/File:WWS_Firetruck.ogg' },
     { what: 'Sweden fire: 1958 Fire Truck', title: 'WWS FiretruckFordF600-1958–sirens', by: 'Work With Sounds / Torsten Nilsson',
       licence: 'CC BY 4.0 (creativecommons.org/licenses/by/4.0)', url: 'commons.wikimedia.org/wiki/File:WWS_FiretruckFordF600-19588211sirens.ogg' },
+    { what: 'Netherlands ambulance: Driving Past, Arriving and Horn From Inside',
+      title: 'Het voorbijrijden van een ambulance met sirene, Het aankomen en stoppen van een ambulance met sirene, Hoorn van een ambulance',
+      by: 'Beeld en Geluid (Netherlands Institute for Sound and Vision), 1981',
+      licence: 'CC BY-SA 3.0 (creativecommons.org/licenses/by-sa/3.0). These three trimmed clips are shared under the same licence.',
+      url: 'commons.wikimedia.org/wiki/Category:Sounds_from_Geluid_van_Nederland_to_be_checked' },
+    { what: 'Netherlands fire: Fire Trucks Driving Past', title: 'Brandweerwagens passeren met sirene', by: 'GvNL-Steim Workshop (recorded by Robin Koek)',
+      licence: 'CC BY 3.0 (creativecommons.org/licenses/by/3.0)',
+      url: 'commons.wikimedia.org/wiki/File:Brandweerwagens_passeren_met_sirene_-_SoundCloud_-_GvNL-Steim_Workshop.ogg' },
   ];
 
   window.SERVICES = [

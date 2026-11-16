@@ -179,7 +179,7 @@
 
   function renderCredits() {
     $('#credits-body').innerHTML = `
-      <p>For grown-ups. Sounds marked "🎙️ Real" are real recordings shared by the people below. Each one was trimmed so it repeats smoothly, converted to AAC and adjusted in volume. Every other sound is synthesized by the app.</p>
+      <p>For grown-ups. Sounds marked "🎙️ Real" are real recordings shared by the people below. Each one was trimmed, converted to AAC and adjusted in volume. Every other sound is synthesized by the app.</p>
       ${(window.CREDITS || []).map(c => `<div class="credit">
         <b>${c.what}</b>
         <span>"${c.title}" by ${c.by}</span>
