@@ -26,3 +26,25 @@ france-ambulance-two-tone.m4a
 france-ambulance-three-tone.m4a
   From "Ambulance, 3 Ton Siren", BigSoundBank. Royalty free (CC0-like).
   https://bigsoundbank.com/ambulance-siren-1-s1463.html
+
+slovenia-police-siren-1.m4a, slovenia-police-siren-3.m4a, slovenia-police-motorbike.m4a
+  From "WWS Policevan-sirenone.ogg", "WWS Policevan8211sirenthree.ogg" and "WWS Policemotorbike8211siren.ogg"
+  by Work With Sounds / Technical Museum of Slovenia (recordist Bostjan Troha). CC BY 4.0.
+  https://commons.wikimedia.org/wiki/File:WWS_Policevan-sirenone.ogg
+  https://commons.wikimedia.org/wiki/File:WWS_Policevan8211sirenthree.ogg
+  https://commons.wikimedia.org/wiki/File:WWS_Policemotorbike8211siren.ogg
+
+slovenia-police-siren-2.m4a
+  From "WWS Policevan8211sirentwo.ogg" by Work With Sounds / Technical Museum of Slovenia (recordist Dusan Oblak). CC BY 4.0.
+  https://commons.wikimedia.org/wiki/File:WWS_Policevan8211sirentwo.ogg
+
+finland-fire-engine.m4a, finland-fire-chief-van.m4a
+  From "WWS Firetruck.ogg" and "WWS Sirenofthefirechief8217svan.ogg" by Work With Sounds / Werstas (recordist Teemu Ahola). CC BY 4.0.
+  https://commons.wikimedia.org/wiki/File:WWS_Firetruck.ogg
+  https://commons.wikimedia.org/wiki/File:WWS_Sirenofthefirechief8217svan.ogg
+
+sweden-fire-1958.m4a
+  From "WWS FiretruckFordF600-19588211sirens.ogg" by Work With Sounds / Torsten Nilsson. CC BY 4.0.
+  https://commons.wikimedia.org/wiki/File:WWS_FiretruckFordF600-19588211sirens.ogg
+
+CC BY 4.0 licence: https://creativecommons.org/licenses/by/4.0/

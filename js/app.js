@@ -132,7 +132,7 @@
   function renderStation() {
     $('#station-title').textContent = `${cur.flag} ${cur.name}`;
     $('#fact').textContent = '💡 ' + cur.fact;
-    $('#tabs').innerHTML = SERVICES.map(s => {
+    $('#tabs').innerHTML = SERVICES.filter(s => cur.services[s.id]).map(s => {
       const svc = cur.services[s.id];
       return `<button class="tab" data-service="${s.id}">
         <span class="mini">${vehicleSVG(s.id, svc.livery)}</span>
@@ -164,7 +164,7 @@
 
   function openStation(c) {
     cur = c;
-    serviceId = 'fire';
+    serviceId = SERVICES.find(s => c.services[s.id]).id; // some countries only have one service
     renderStation();
     openSheet('#station');
     if (!state.visited.includes(c.id)) {
@@ -352,12 +352,16 @@
       // flag pins
       const centre = [-rot[0], -rot[1]];
       const size = clamp(0.8 + 0.2 * zoom, 0.9, 1.3);
+      const placed = []; // pins that would sit on top of an earlier one stay hidden until he zooms in
       for (const { c, el } of pins) {
         const d = d3.geoDistance(c.pin, centre);
         if (d > 1.32) { el.style.display = 'none'; continue; }
         const [x, y] = projection(c.pin);
+        const scale = size * (1 - 0.3 * (d / 1.32) ** 2);
+        if (placed.some(([px, py]) => Math.hypot(px - x, py - y) < 30 * scale)) { el.style.display = 'none'; continue; }
+        placed.push([x, y]);
         el.style.display = '';
-        el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${(size * (1 - 0.3 * (d / 1.32) ** 2)).toFixed(3)})`;
+        el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${scale.toFixed(3)})`;
       }
     }
 
@@ -392,7 +396,7 @@
     }
 
     function visit(c) {
-      if (fly) return;
+      if (fly && fly.done) return; // already flying to a country (a plain zoom-out can be interrupted)
       lastTouch = performance.now();
       $('#hint').classList.add('gone');
       flyTo([-c.pin[0], clamp(-c.pin[1], -75, 75)], Math.max(zoom, 2.2), 850, () => openStation(c));
@@ -631,6 +635,7 @@
     for (const c of COUNTRIES) {
       for (const s of SERVICES) {
         const svc = c.services[s.id];
+        if (!svc) continue;
         for (const sound of svc.sounds) {
           const item = { key: keyOf(c, s.id, sound), c, sid: s.id, svc, sound, kind: kindOf(sound) };
           all.push(item);

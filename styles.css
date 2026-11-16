@@ -228,7 +228,7 @@ h1 {
   text-wrap: balance;
 }
 
-.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tabs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 10px; }
 .tab {
   display: flex;
   align-items: center;

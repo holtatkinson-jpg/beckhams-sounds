@@ -363,6 +363,50 @@
         },
       },
     },
+    // ---- countries below have real recordings only, so they show just the services that were recorded ----
+    {
+      id: 'si', iso: '705', name: 'Slovenia', flag: '🇸🇮', pin: [14.8, 46.1],
+      fact: 'Slovenian police cars say "POLICIJA". These sirens were recorded at the traffic police station in Ljubljana.',
+      services: {
+        police: {
+          label: 'Policija', call: '113',
+          livery: { body: WHITE, band: ['#1c3f94'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'POLICIJA', textColor: '#1c3f94' },
+          sounds: [
+            snd('main', 'Main Siren', '⚡', 'Wee-oo-wee-oo', real(sweep(551, 959, 0.2, 0.17), 'slovenia-police-siren-1.m4a', [0.1, 3.075])),
+            snd('hilo', 'Hi-Lo', '🎶', 'Dee-doo', real(tones([[538, 0.76], [747, 0.76]]), 'slovenia-police-siren-2.m4a', [0.1, 12.24])),
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', real(sweep(544, 1040, 1.9, 4.1), 'slovenia-police-siren-3.m4a', [0.1, 6.09])),
+            snd('bike', 'Police Motorbike', '🏍️', 'Dee-doo (on two wheels)', real(tones([[485, 0.75], [621, 0.75]]), 'slovenia-police-motorbike.m4a', [0.1, 9.1])),
+          ],
+        },
+      },
+    },
+    {
+      id: 'fi', iso: '246', name: 'Finland', flag: '🇫🇮', pin: [26, 64],
+      fact: 'Finnish fire engines say "Pelastuslaitos", which means rescue department.',
+      services: {
+        fire: {
+          label: 'Pelastuslaitos · Fire', call: '112',
+          livery: { body: RED, band: ['#f6e500'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'PELASTUSLAITOS', textColor: WHITE },
+          sounds: [
+            snd('engine', 'Fire Engine', '🎶', 'Daa-dee-daa-dee', real(tones([[374, 0.93], [501, 0.93]], { wave: 'sawtooth', lp: 2600 }), 'finland-fire-engine.m4a', [0.1, 11.27])),
+            snd('chief', "Fire Chief's Van", '🎵', 'Daa-dee (a bit higher)', real(tones([[394, 0.96], [525, 0.96]]), 'finland-fire-chief-van.m4a', [0.1, 11.61])),
+          ],
+        },
+      },
+    },
+    {
+      id: 'se', iso: '752', name: 'Sweden', flag: '🇸🇪', pin: [15.5, 61],
+      fact: 'This siren comes from a fire truck built in 1958. It now lives in a fire brigade museum in Sweden.',
+      services: {
+        fire: {
+          label: 'Brandkår · Fire', call: '112',
+          livery: { body: RED, band: [WHITE], pattern: 'stripe', lights: [BLUE, BLUE], text: 'BRANDKÅR', textColor: WHITE },
+          sounds: [
+            snd('old', '1958 Fire Truck', '🎶', 'Dee-daa-dee-daa', real(tones([[424, 0.9], [580, 0.9]], { wave: 'sawtooth', lp: 2600 }), 'sweden-fire-1958.m4a', [0.1, 11.01])),
+          ],
+        },
+      },
+    },
   ];
 
   // Sounds that belong to one country only. The game uses these for "Which country?" questions.
@@ -373,6 +417,7 @@
     'de/fire/air', 'de/police/city',
     'it/ems/bitonale',
     'jp/ems/piipoo', 'jp/fire/bell', 'jp/fire/kan',
+    'si/police/main',
   ];
 
   // Where the real recordings came from. Shown on the Credits screen.
@@ -389,6 +434,15 @@
       url: 'bigsoundbank.com/ambulance-siren-2-s1464.html' },
     { what: 'France SAMU: Three-Tone', title: 'Ambulance, 3 Ton Siren', by: 'BigSoundBank', licence: 'Royalty free (CC0-like)',
       url: 'bigsoundbank.com/ambulance-siren-1-s1463.html' },
+    { what: 'Slovenia police: Main Siren, Wail and Police Motorbike', title: 'WWS Policevan-sirenone, WWS Policevan–sirenthree, WWS Policemotorbike–siren',
+      by: 'Work With Sounds / Technical Museum of Slovenia (recordist Boštjan Troha)',
+      licence: 'CC BY 4.0 (creativecommons.org/licenses/by/4.0)', url: 'commons.wikimedia.org/wiki/Category:Audio_files_from_Work_With_Sounds' },
+    { what: 'Slovenia police: Hi-Lo', title: 'WWS Policevan–sirentwo', by: 'Work With Sounds / Technical Museum of Slovenia (recordist Dušan Oblak)',
+      licence: 'CC BY 4.0 (creativecommons.org/licenses/by/4.0)', url: 'commons.wikimedia.org/wiki/File:WWS_Policevan8211sirentwo.ogg' },
+    { what: "Finland fire: Fire Engine and Fire Chief's Van", title: "WWS Firetruck, WWS Sirenofthefirechief's van", by: 'Work With Sounds / Werstas (recordist Teemu Ahola)',
+      licence: 'CC BY 4.0 (creativecommons.org/licenses/by/4.0)', url: 'commons.wikimedia.org/wiki/File:WWS_Firetruck.ogg' },
+    { what: 'Sweden fire: 1958 Fire Truck', title: 'WWS FiretruckFordF600-1958–sirens', by: 'Work With Sounds / Torsten Nilsson',
+      licence: 'CC BY 4.0 (creativecommons.org/licenses/by/4.0)', url: 'commons.wikimedia.org/wiki/File:WWS_FiretruckFordF600-19588211sirens.ogg' },
   ];
 
   window.SERVICES = [
