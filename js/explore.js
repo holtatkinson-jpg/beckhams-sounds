@@ -4,6 +4,9 @@
   const { state, save, toast, byId, keyOf, Globe } = App;
   const $ = sel => document.querySelector(sel);
   const pick = list => list[Math.floor(Math.random() * list.length)];
+  // "the USA", "the United Kingdom", "the Netherlands", but plain "Japan"
+  const the = c => (['us', 'gb', 'nl'].includes(c.id) ? 'the ' : '') + c.name;
+  const The = c => the(c).replace(/^t/, 'T');
   const shuffle = list => {
     for (let i = list.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -197,7 +200,7 @@
         <p>⏱️ That is ${long} in a jet plane</p>
         ${seas.length ? `<p>🌊 You flew over the <b>${seas.join('</b> and the <b>')}</b></p>` : ''}
         <p>${clock(to, new Date())}</p>
-        ${first ? `<p class="won">✈️ New sticker for ${to.name}!</p>` : ''}
+        ${first ? `<p class="won">✈️ New sticker for ${the(to)}!</p>` : ''}
         <div class="trip-buttons">
           <button class="big-btn drive" id="trip-visit">🚒 Visit ${to.name}</button>
           <button class="big-btn next" id="trip-again">✈️ Fly again</button>
@@ -254,7 +257,7 @@
     function hint() {
       if (!m || m.step !== 'find') return;
       m.hints++;
-      toast(`💡 ${m.c.name} is in ${m.c.continent}`);
+      toast(`💡 ${The(m.c)} is in ${m.c.continent}`);
       Globe.goTo(m.c.pin, 2.2, 900);
       const pin = document.querySelector(`.pin[data-country="${m.c.id}"]`);
       if (pin && m.hints > 1) { pin.classList.add('nudge'); setTimeout(() => pin.classList.remove('nudge'), 3000); }
@@ -267,7 +270,7 @@
       Globe.hold(false);
       hideBar();
       App.setIntercept(() => true); // ignore taps while the globe flies in
-      toast(`✅ You found ${c.name}!`);
+      toast(`✅ You found ${the(c)}!`);
       const mine = m;
       const open = () => {
         if (m !== mine || mine.opened) return;
@@ -295,7 +298,7 @@
           .filter(n => !own.has(n));
         m.options = shuffle([svc.call, ...shuffle(pool).slice(0, 2)]).map(n => ({ icon: '📞', label: n, right: n === svc.call }));
         body.innerHTML = `${head()}
-          <p class="prompt">Which number do you call for ${WHO[sid]} in ${c.name}?</p>
+          <p class="prompt">Which number do you call for ${WHO[sid]} in ${the(c)}?</p>
           <div class="choices">${choices()}</div>
           <div class="game-foot"><p class="verdict" id="m-verdict"></p></div>`;
       } else if (m.step === 'send') {
@@ -314,7 +317,7 @@
           <div class="big">🏅</div>
           <div class="stars">${[0, 1, 2].map(i => `<span class="${i < stars ? '' : 'off'}">⭐</span>`).join('')}</div>
           <h3>Mission complete!</h3>
-          <p>${c.flag} ${HERO[sid]} in ${c.capital} saved the day.${m.first ? `<br>🚨 New sticker for ${c.name}!` : ''}</p>
+          <p>${c.flag} ${HERO[sid]} in ${c.capital} saved the day.${m.first ? `<br>🚨 New sticker for ${the(c)}!` : ''}</p>
           <button class="big-btn drive" id="mission-next">🚨 Next mission</button>
         </div>`;
       }
@@ -333,7 +336,7 @@
       }
       el.classList.add('right');
       m.locked = true;
-      $('#m-verdict').textContent = m.step === 'call' ? `🎉 Yes! In ${m.c.name} you call ${m.svc.call}.` : '🎉 That is the right team!';
+      $('#m-verdict').textContent = m.step === 'call' ? `🎉 Yes! In ${the(m.c)} you call ${m.svc.call}.` : '🎉 That is the right team!';
       timer = setTimeout(() => { m.locked = false; m.options = null; m.step = m.step === 'call' ? 'send' : 'go'; render(); }, 1300);
     }
 
