@@ -481,6 +481,26 @@
       url: 'commons.wikimedia.org/wiki/File:Brandweerwagens_passeren_met_sirene_-_SoundCloud_-_GvNL-Steim_Workshop.ogg' },
   ];
 
+  // Facts for the Country Cards, Fly There and Rescue Missions.
+  // city = [longitude, latitude] of the capital; tz = its time zone.
+  const FACTS = {
+    us: { capital: 'Washington, D.C.', city: [-77.04, 38.9], continent: 'North America', language: 'English', hello: 'Hello', tz: 'America/New_York' },
+    ca: { capital: 'Ottawa', city: [-75.7, 45.42], continent: 'North America', language: 'English and French', hello: 'Hello / Bonjour', tz: 'America/Toronto' },
+    mx: { capital: 'Mexico City', city: [-99.13, 19.43], continent: 'North America', language: 'Spanish', hello: 'Hola', tz: 'America/Mexico_City' },
+    br: { capital: 'Brasília', city: [-47.93, -15.78], continent: 'South America', language: 'Portuguese', hello: 'Olá', tz: 'America/Sao_Paulo' },
+    gb: { capital: 'London', city: [-0.13, 51.5], continent: 'Europe', language: 'English', hello: 'Hello', tz: 'Europe/London' },
+    fr: { capital: 'Paris', city: [2.35, 48.86], continent: 'Europe', language: 'French', hello: 'Bonjour', tz: 'Europe/Paris' },
+    de: { capital: 'Berlin', city: [13.4, 52.52], continent: 'Europe', language: 'German', hello: 'Hallo', tz: 'Europe/Berlin' },
+    it: { capital: 'Rome', city: [12.5, 41.9], continent: 'Europe', language: 'Italian', hello: 'Ciao', tz: 'Europe/Rome' },
+    jp: { capital: 'Tokyo', city: [139.69, 35.68], continent: 'Asia', language: 'Japanese', hello: 'Konnichiwa', tz: 'Asia/Tokyo' },
+    au: { capital: 'Canberra', city: [149.13, -35.28], continent: 'Oceania', language: 'English', hello: "G'day", tz: 'Australia/Sydney' },
+    si: { capital: 'Ljubljana', city: [14.51, 46.05], continent: 'Europe', language: 'Slovenian', hello: 'Živjo', tz: 'Europe/Ljubljana' },
+    fi: { capital: 'Helsinki', city: [24.94, 60.17], continent: 'Europe', language: 'Finnish', hello: 'Hei', tz: 'Europe/Helsinki' },
+    se: { capital: 'Stockholm', city: [18.07, 59.33], continent: 'Europe', language: 'Swedish', hello: 'Hej', tz: 'Europe/Stockholm' },
+    nl: { capital: 'Amsterdam', city: [4.9, 52.37], continent: 'Europe', language: 'Dutch', hello: 'Hallo', tz: 'Europe/Amsterdam' },
+  };
+  for (const c of window.COUNTRIES) Object.assign(c, FACTS[c.id]);
+
   window.SERVICES = [
     { id: 'fire', emoji: '🚒', word: 'Fire' },
     { id: 'police', emoji: '🚓', word: 'Police' },

@@ -10,8 +10,11 @@
       return {
         visited: s.visited || [], favs: s.favs || [], trophies: s.trophies || 0,
         custom: s.custom || [], customSeq: s.customSeq || 0, maker: s.maker || null,
+        home: s.home || 'us', flown: s.flown || {}, missions: s.missions || {}, heard: s.heard || {},
       };
-    } catch (e) { return { visited: [], favs: [], trophies: 0, custom: [], customSeq: 0, maker: null }; }
+    } catch (e) {
+      return { visited: [], favs: [], trophies: 0, custom: [], customSeq: 0, maker: null, home: 'us', flown: {}, missions: {}, heard: {} };
+    }
   })();
   const save = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} };
 
@@ -23,6 +26,14 @@
     const c = byId[cid], svc = c && c.services[sid];
     const sound = svc && svc.sounds.find(s => s.id === nid);
     return sound ? { c, sid, svc, sound } : null;
+  }
+
+  // other features (explore.js) plug in here
+  const hooks = { paint: [], close: [] };
+  let intercept = null; // lets a mission or a flight take over what tapping a country does
+  function chooseCountry(c) {
+    if (intercept && intercept(c)) return;
+    Globe.visit(c);
   }
 
   // ---------- toast ----------
@@ -53,6 +64,7 @@
       if (playingKey === key) { playingKey = null; endDrive(); paintPlaying(); }
     });
     playingKey = key;
+    if (hit.c.id !== 'my' && !state.heard[key]) { state.heard[key] = 1; save(); }
     paintPlaying();
   }
 
@@ -69,6 +81,7 @@
     if (here) $('#says').textContent = `“${findSound(playingKey).sound.says}”`;
     Game.paint();
     Maker.paint();
+    hooks.paint.forEach(f => f(playingKey));
   }
 
   let driveStage = null;
@@ -200,6 +213,7 @@
     el.classList.remove('open');
     el.setAttribute('aria-hidden', 'true');
     if (el.id === 'station') Globe.zoomOut();
+    hooks.close.forEach(f => f(el.id));
   }
 
   function paintVisited() {
@@ -223,7 +237,7 @@
       if (t.dataset.service !== serviceId) { Sirens.stop(); serviceId = t.dataset.service; renderService(); }
       return;
     }
-    if (t.dataset.country) return Globe.visit(byId[t.dataset.country]);
+    if (t.dataset.country) return chooseCountry(byId[t.dataset.country]);
     if ('close' in t.dataset) return closeSheet(t.closest('.sheet'));
     if ('garage' in t.dataset || t.id === 'open-garage') { Sirens.stop(); renderGarage(); return openSheet('#garage'); }
     if (t.id === 'open-game') { openSheet('#game'); return Game.start(); }
@@ -267,6 +281,7 @@
     let rot = [98, -34, 0]; // start looking at the USA
     let land = null, dirty = true, fly = null, vel = [0, 0];
     let lastTouch = -1e9;
+    let allLand = [], overlay = null, ticker = null, hold = false; // used by Fly There and Missions
 
     const pins = COUNTRIES.map(c => {
       const el = document.createElement('button');
@@ -290,6 +305,7 @@
         if (c) c.feature = f; else rest.push(f);
       }
       land = { type: 'FeatureCollection', features: rest };
+      allLand = feats;
       dirty = true;
     });
 
@@ -349,6 +365,8 @@
       g.fillStyle = grad;
       g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.fill();
 
+      if (overlay) overlay({ g, projection, path, R, W, H, centre: [-rot[0], -rot[1]] });
+
       // flag pins
       const centre = [-rot[0], -rot[1]];
       const size = clamp(0.8 + 0.2 * zoom, 0.9, 1.3);
@@ -366,6 +384,7 @@
     }
 
     function tick(now) {
+      if (ticker && ticker(now)) dirty = true;
       if (fly) {
         const k = clamp((now - fly.t0) / fly.dur, 0, 1);
         const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
@@ -380,7 +399,7 @@
           rot[1] = clamp(rot[1] + vel[1], -75, 75);
           vel[0] *= 0.93; vel[1] *= 0.93;
           dirty = true;
-        } else if (!calm && now - lastTouch > 6000 && !document.querySelector('.sheet.open')) {
+        } else if (!hold && !calm && now - lastTouch > 6000 && !document.querySelector('.sheet.open')) {
           rot[0] += 0.03; // slow idle spin
           dirty = true;
         }
@@ -395,11 +414,21 @@
       vel = [0, 0];
     }
 
-    function visit(c) {
+    function visit(c, then) {
       if (fly && fly.done) return; // already flying to a country (a plain zoom-out can be interrupted)
       lastTouch = performance.now();
       $('#hint').classList.add('gone');
-      flyTo([-c.pin[0], clamp(-c.pin[1], -75, 75)], Math.max(zoom, 2.2), 850, () => openStation(c));
+      flyTo([-c.pin[0], clamp(-c.pin[1], -75, 75)], Math.max(zoom, 2.2), 850, () => (then || openStation)(c));
+    }
+
+    // glide the view a little closer to a spot each frame (used while the plane is flying)
+    function follow(spot, z) {
+      const dLon = ((-spot[0] - rot[0]) % 360 + 540) % 360 - 180;
+      rot[0] += dLon * 0.1;
+      rot[1] += (clamp(-spot[1], -75, 75) - rot[1]) * 0.1;
+      zoom += (z - zoom) * 0.08;
+      lastTouch = performance.now();
+      dirty = true;
     }
 
     // ----- touch + mouse -----
@@ -463,7 +492,7 @@
       const spot = projection.invert([x, y]);
       if (!spot) return;
       const c = COUNTRIES.find(c => c.feature && d3.geoContains(c.feature, spot));
-      if (c) { Sirens.unlock(); visit(c); }
+      if (c) { Sirens.unlock(); chooseCountry(c); }
     }
 
     requestAnimationFrame(tick);
@@ -473,6 +502,12 @@
       redraw: () => { dirty = true; },
       zoomBy: f => { zoom = clamp(zoom * f, 0.8, 4); lastTouch = performance.now(); dirty = true; },
       zoomOut: () => { lastTouch = performance.now(); flyTo([rot[0], rot[1]], 1, 600); },
+      follow,
+      goTo: (spot, z, dur, done) => { lastTouch = performance.now(); flyTo([-spot[0], clamp(-spot[1], -75, 75)], z, dur, done); },
+      setOverlay: fn => { overlay = fn; dirty = true; },
+      setTicker: fn => { ticker = fn; },
+      hold: on => { hold = on; vel = [0, 0]; },
+      overLand: spot => allLand.some(f => d3.geoContains(f, spot)),
     };
   })();
 
@@ -770,6 +805,13 @@
 
     return { start, answer, next, paint };
   })();
+
+  // what explore.js (Missions, Fly There, Country Cards) is allowed to use
+  window.App = {
+    state, save, toast, byId, keyOf, playKey, driveBy, openSheet, closeSheet, hooks, Globe,
+    setIntercept: fn => { intercept = fn; },
+    stopDrive: endDrive,
+  };
 
   paintVisited();
   renderGarage();

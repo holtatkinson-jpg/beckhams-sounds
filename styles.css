@@ -574,6 +574,118 @@ h1 {
 .credit b { display: block; font-size: 17px; }
 .credit span { display: block; color: var(--soft); font-size: 15px; overflow-wrap: anywhere; }
 
+/* ---------- activities row on the home screen ---------- */
+.activities {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 2px 4px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.activities::-webkit-scrollbar { display: none; }
+.act {
+  flex: 0 0 auto;
+  min-height: 50px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  font-size: 17px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.act:active { transform: scale(0.95); }
+.act-mission { background: rgba(255, 77, 77, 0.24); border-color: rgba(255, 77, 77, 0.8); }
+.act-fly { background: rgba(255, 210, 63, 0.2); border-color: rgba(255, 210, 63, 0.75); }
+@media (min-width: 641px) and (max-width: 900px) { .activities { flex-wrap: wrap; overflow: visible; } }
+#home.mode-on .activities, #home.mode-on .credits-btn { visibility: hidden; }
+#home.mode-find #flag-strip { visibility: hidden; }
+
+/* ---------- bar and card on top of the globe (flights and missions) ---------- */
+.pill.small { min-height: 42px; padding: 0 14px; font-size: 16px; }
+.mode-bar {
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  max-width: 100%;
+  padding: 8px 10px 8px 18px;
+  border-radius: 26px;
+  background: rgba(7, 18, 38, 0.88);
+  border: 2px solid var(--sun);
+  font-size: 18px;
+  font-weight: 700;
+  text-wrap: balance;
+}
+.mode-bar b { font-weight: 900; color: var(--sun); }
+.mode-bar[hidden], .trip-card[hidden], .mode-bar button[hidden] { display: none; }
+.trip-card {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  z-index: 3;
+  width: min(560px, 100%);
+  padding: 14px 18px;
+  border-radius: 24px;
+  background: rgba(7, 18, 38, 0.92);
+  border: 2px solid var(--line);
+  font-size: 17px;
+  font-weight: 700;
+}
+.trip-card p { margin: 0 0 6px; text-wrap: pretty; }
+.trip-card b { color: var(--sun); font-weight: 900; }
+.trip-card .won { color: var(--green); font-weight: 900; }
+.trip-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.trip-buttons .big-btn { flex: 1; min-height: 54px; font-size: 18px; }
+.pin.nudge { animation: nudge 0.6s ease-in-out 5; }
+@keyframes nudge { 50% { box-shadow: 0 0 0 14px rgba(255, 210, 63, 0.75); } }
+
+/* ---------- missions ---------- */
+#mission, #cards { z-index: 20; }
+.story {
+  margin: 0;
+  padding: 12px 18px;
+  border-radius: 20px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  font-size: clamp(17px, 2.4vw, 21px);
+  font-weight: 700;
+  text-align: center;
+  text-wrap: balance;
+}
+.game-body .stage { width: 100%; flex: 0 0 auto; height: min(300px, 38vh); min-height: 170px; }
+
+/* ---------- country cards ---------- */
+.cards-key { margin: 0; text-align: center; font-size: 16px; font-weight: 700; color: var(--soft); text-wrap: balance; }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; align-content: start; }
+.ccard { padding: 12px 14px; border-radius: 22px; background: var(--card); border: 3px solid transparent; }
+.ccard.full { border-color: var(--sun); background: rgba(255, 210, 63, 0.14); }
+.cc-top { display: flex; align-items: center; gap: 10px; }
+.cc-top b { font-size: 21px; font-weight: 900; }
+.cc-flag { font-size: 40px; line-height: 1; }
+.ccard ul { list-style: none; margin: 8px 0; padding: 0; font-size: 16px; font-weight: 700; line-height: 1.5; }
+.ccard ul b { font-weight: 900; }
+.ccard ul small { color: var(--soft); font-size: 14px; }
+.stickers { display: flex; gap: 8px; margin-bottom: 10px; }
+.stickers span {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px dashed var(--line);
+  font-size: 22px;
+  filter: grayscale(1) opacity(0.35);
+}
+.stickers span.got { filter: none; border: 2px solid var(--sun); background: rgba(255, 210, 63, 0.2); }
+
 /* ---------- toast ---------- */
 .toast {
   position: fixed;

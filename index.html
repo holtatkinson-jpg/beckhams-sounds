@@ -14,7 +14,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" type="image/png" href="icons/icon-192.png">
-  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="stylesheet" href="styles.css?v=8">
 </head>
 <body>
 
@@ -24,16 +24,28 @@
       <h1><span class="beacon">🚨</span> Beckham's Sounds</h1>
       <div class="top-right">
         <div class="passport" id="passport" aria-label="Countries visited"></div>
-        <button class="pill" id="open-garage">⭐ My Garage</button>
-        <button class="pill play-pill" id="open-game">🎮 Play</button>
-        <button class="pill make-pill" id="open-maker">🎛️ Make</button>
       </div>
     </header>
+
+    <nav class="activities" aria-label="Things to do">
+      <button class="act act-mission" id="open-mission">🚨 Missions</button>
+      <button class="act act-fly" id="open-fly">✈️ Fly There</button>
+      <button class="act play-pill" id="open-game">🎮 Guess the Siren</button>
+      <button class="act make-pill" id="open-maker">🎛️ Siren Maker</button>
+      <button class="act" id="open-cards">📒 Cards</button>
+      <button class="act" id="open-garage">⭐ My Garage</button>
+    </nav>
 
     <div id="globe-wrap">
       <canvas id="globe" aria-label="World globe"></canvas>
       <div id="pins"></div>
       <div class="hint" id="hint">👆 Spin the globe and tap a flag!</div>
+      <div class="mode-bar" id="mode-bar" hidden>
+        <span id="mode-text"></span>
+        <button class="pill small" id="mode-action"></button>
+        <button class="pill small" id="mode-quit" aria-label="Stop">✖</button>
+      </div>
+      <div class="trip-card" id="trip-card" hidden></div>
       <button class="credits-btn" id="open-credits">ℹ️ Credits</button>
       <div class="zoom">
         <button id="zoom-in" aria-label="Zoom in">+</button>
@@ -117,6 +129,27 @@
     </div>
   </section>
 
+  <!-- MISSION: answer the call -->
+  <section id="mission" class="sheet" aria-hidden="true">
+    <header class="sheet-top">
+      <button class="pill back" data-close>⬅ Back</button>
+      <h2>🚨 Rescue Mission</h2>
+      <div class="passport" id="mission-count" aria-label="Missions finished"></div>
+    </header>
+    <div class="game-body" id="mission-body"></div>
+  </section>
+
+  <!-- CARDS: facts and stickers for each country -->
+  <section id="cards" class="sheet" aria-hidden="true">
+    <header class="sheet-top">
+      <button class="pill back" data-close>⬅ Back</button>
+      <h2>📒 Country Cards</h2>
+      <div class="passport" id="sticker-count" aria-label="Stickers collected"></div>
+    </header>
+    <p class="cards-key">Collect four stickers in every country: 🛂 visit it · 🔊 hear every sound · 🚨 finish a mission · ✈️ fly there</p>
+    <div class="cards-grid" id="cards-grid"></div>
+  </section>
+
   <!-- CREDITS: for grown-ups -->
   <section id="credits" class="sheet" aria-hidden="true">
     <header class="sheet-top">
@@ -131,9 +164,10 @@
 
   <script src="vendor/d3.min.js"></script>
   <script src="vendor/topojson-client.min.js"></script>
-  <script src="js/data.js?v=7"></script>
-  <script src="js/sirens.js?v=7"></script>
-  <script src="js/vehicles.js?v=7"></script>
-  <script src="js/app.js?v=7"></script>
+  <script src="js/data.js?v=8"></script>
+  <script src="js/sirens.js?v=8"></script>
+  <script src="js/vehicles.js?v=8"></script>
+  <script src="js/app.js?v=8"></script>
+  <script src="js/explore.js?v=8"></script>
 </body>
 </html>
