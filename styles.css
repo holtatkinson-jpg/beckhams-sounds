@@ -587,11 +587,11 @@ h1 {
 .act {
   flex: 0 0 auto;
   min-height: 50px;
-  padding: 0 16px;
+  padding: 0 13px;
   border-radius: 999px;
   background: var(--card);
   border: 2px solid var(--line);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
   white-space: nowrap;
 }
@@ -601,6 +601,10 @@ h1 {
 @media (min-width: 641px) and (max-width: 900px) { .activities { flex-wrap: wrap; overflow: visible; } }
 #home.mode-on .activities, #home.mode-on .credits-btn { visibility: hidden; }
 #home.mode-find #flag-strip { visibility: hidden; }
+#home.mode-findit #pins { display: none; }
+#home.mode-findit #flag-strip { visibility: hidden; }
+.act-find { background: rgba(160, 110, 255, 0.26); border-color: rgba(160, 110, 255, 0.85); }
+.mode-bar .pill.nudge { animation: nudge 0.6s ease-in-out 5; }
 
 /* ---------- bar and card on top of the globe (flights and missions) ---------- */
 .pill.small { min-height: 42px; padding: 0 14px; font-size: 16px; }

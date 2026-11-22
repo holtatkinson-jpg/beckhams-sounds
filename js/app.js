@@ -10,10 +10,10 @@
       return {
         visited: s.visited || [], favs: s.favs || [], trophies: s.trophies || 0,
         custom: s.custom || [], customSeq: s.customSeq || 0, maker: s.maker || null,
-        home: s.home || 'us', flown: s.flown || {}, missions: s.missions || {}, heard: s.heard || {},
+        home: s.home || 'us', flown: s.flown || {}, missions: s.missions || {}, heard: s.heard || {}, found: s.found || {},
       };
     } catch (e) {
-      return { visited: [], favs: [], trophies: 0, custom: [], customSeq: 0, maker: null, home: 'us', flown: {}, missions: {}, heard: {} };
+      return { visited: [], favs: [], trophies: 0, custom: [], customSeq: 0, maker: null, home: 'us', flown: {}, missions: {}, heard: {}, found: {} };
     }
   })();
   const save = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} };
@@ -281,7 +281,7 @@
     let rot = [98, -34, 0]; // start looking at the USA
     let land = null, dirty = true, fly = null, vel = [0, 0];
     let lastTouch = -1e9;
-    let allLand = [], overlay = null, ticker = null, hold = false; // used by Fly There and Missions
+    let allLand = [], overlay = null, ticker = null, hold = false, tapHook = null, plain = false; // used by Fly There, Missions and Find It
 
     const pins = COUNTRIES.map(c => {
       const el = document.createElement('button');
@@ -351,9 +351,10 @@
         for (const c of COUNTRIES) {
           if (!c.feature) continue;
           g.beginPath(); path(c.feature);
-          g.fillStyle = state.visited.includes(c.id) ? '#ff9f43' : '#ffd23f';
+          // "plain" hides which countries have sirens, so Find It does not give answers away
+          g.fillStyle = plain ? '#3fb873' : state.visited.includes(c.id) ? '#ff9f43' : '#ffd23f';
           g.fill();
-          g.strokeStyle = '#8a5a00'; g.lineWidth = 1.5; g.stroke();
+          g.strokeStyle = plain ? '#2c9159' : '#8a5a00'; g.lineWidth = plain ? 1 : 1.5; g.stroke();
         }
       }
 
@@ -491,6 +492,7 @@
       if (Math.hypot(x - W / 2, y - H / 2) > baseR * zoom) return;
       const spot = projection.invert([x, y]);
       if (!spot) return;
+      if (tapHook) { Sirens.unlock(); return tapHook(spot); }
       const c = COUNTRIES.find(c => c.feature && d3.geoContains(c.feature, spot));
       if (c) { Sirens.unlock(); chooseCountry(c); }
     }
@@ -508,6 +510,10 @@
       setTicker: fn => { ticker = fn; },
       hold: on => { hold = on; vel = [0, 0]; },
       overLand: spot => allLand.some(f => d3.geoContains(f, spot)),
+      landAt: spot => allLand.find(f => d3.geoContains(f, spot)) || null,
+      features: () => allLand,
+      setTapHook: fn => { tapHook = fn; },
+      setPlain: on => { plain = on; dirty = true; },
     };
   })();
 

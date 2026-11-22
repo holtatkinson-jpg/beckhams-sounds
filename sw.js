@@ -1,6 +1,6 @@
 // Lets the app open with no internet. It always tries the network first (so updates
 // show up straight away) and falls back to the saved copy when offline.
-const CACHE = 'beckhams-sounds-v8';
+const CACHE = 'beckhams-sounds-v10';
 const CORE = [
   './', 'index.html', 'styles.css', 'manifest.webmanifest',
   'js/data.js', 'js/sirens.js', 'js/vehicles.js', 'js/app.js', 'js/explore.js',

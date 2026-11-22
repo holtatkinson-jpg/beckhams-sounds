@@ -368,6 +368,158 @@
   })();
 
   // =====================================================================
+  //  FIND IT!
+  // =====================================================================
+  const FindIt = (() => {
+    const ROUND = 5;
+    // [map code, name, where it is, needs "the"]
+    const PLACES = [
+      ['840', 'USA', 'North America', 1], ['124', 'Canada', 'North America'], ['484', 'Mexico', 'North America'], ['192', 'Cuba', 'North America'],
+      ['304', 'Greenland', 'North America'],
+      ['076', 'Brazil', 'South America'], ['032', 'Argentina', 'South America'], ['152', 'Chile', 'South America'], ['604', 'Peru', 'South America'],
+      ['170', 'Colombia', 'South America'],
+      ['826', 'United Kingdom', 'Europe', 1], ['250', 'France', 'Europe'], ['276', 'Germany', 'Europe'], ['380', 'Italy', 'Europe'], ['724', 'Spain', 'Europe'],
+      ['752', 'Sweden', 'Europe'], ['578', 'Norway', 'Europe'], ['246', 'Finland', 'Europe'], ['616', 'Poland', 'Europe'], ['804', 'Ukraine', 'Europe'],
+      ['352', 'Iceland', 'Europe'], ['372', 'Ireland', 'Europe'], ['300', 'Greece', 'Europe'],
+      ['818', 'Egypt', 'Africa'], ['710', 'South Africa', 'Africa'], ['566', 'Nigeria', 'Africa'], ['404', 'Kenya', 'Africa'], ['504', 'Morocco', 'Africa'],
+      ['450', 'Madagascar', 'Africa'], ['012', 'Algeria', 'Africa'], ['231', 'Ethiopia', 'Africa'],
+      ['643', 'Russia', 'Europe and Asia'], ['156', 'China', 'Asia'], ['356', 'India', 'Asia'], ['392', 'Japan', 'Asia'], ['360', 'Indonesia', 'Asia'],
+      ['682', 'Saudi Arabia', 'Asia'], ['496', 'Mongolia', 'Asia'], ['398', 'Kazakhstan', 'Asia'], ['764', 'Thailand', 'Asia'], ['410', 'South Korea', 'Asia'],
+      ['792', 'Turkey', 'the place where Europe meets Asia'], ['364', 'Iran', 'Asia'], ['586', 'Pakistan', 'Asia'], ['704', 'Vietnam', 'Asia'],
+      ['608', 'Philippines', 'Asia', 1],
+      ['036', 'Australia', 'Oceania'], ['554', 'New Zealand', 'Oceania'], ['598', 'Papua New Guinea', 'Oceania'],
+    ];
+    // tidier versions of the short names in the map data, for "That is ..." messages
+    const NICE = {
+      'United States of America': 'the USA', 'United Kingdom': 'the United Kingdom', 'Philippines': 'the Philippines', 'Netherlands': 'the Netherlands',
+      'Dem. Rep. Congo': 'DR Congo', 'Central African Rep.': 'the Central African Republic', 'Dominican Rep.': 'the Dominican Republic',
+      'S. Sudan': 'South Sudan', 'Bosnia and Herz.': 'Bosnia and Herzegovina', 'Eq. Guinea': 'Equatorial Guinea', 'W. Sahara': 'Western Sahara',
+      'Solomon Is.': 'the Solomon Islands', 'Falkland Is.': 'the Falkland Islands', 'Fr. S. Antarctic Lands': 'the French Southern Lands',
+      'N. Cyprus': 'Northern Cyprus', 'Macedonia': 'North Macedonia', 'eSwatini': 'Eswatini',
+    };
+    const card = $('#trip-card');
+    let places = null, on = false, list = [], idx = 0, target = null;
+    let tries = 0, hints = 0, lastKm = null, stars = 0, glow = null, locked = false, timer = 0;
+
+    // match the list to the shapes on the globe (once the map has loaded)
+    function prepare() {
+      const shapes = new Map(Globe.features().map(f => [String(f.id).padStart(3, '0'), f]));
+      if (!shapes.size) return false;
+      places = PLACES.filter(p => shapes.has(p[0])).map(([code, name, where, article]) => {
+        const feature = shapes.get(code);
+        const polys = feature.geometry.type === 'Polygon' ? [feature.geometry.coordinates] : feature.geometry.coordinates;
+        const main = polys.map(p => ({ type: 'Polygon', coordinates: p })).sort((a, b) => d3.geoArea(b) - d3.geoArea(a))[0];
+        return { code, name, where, the: (article ? 'the ' : '') + name, feature, edge: polys.flat(2), middle: d3.geoCentroid(main) };
+      });
+      return true;
+    }
+
+    const kmTo = spot => Math.min(...target.edge.map(p => d3.geoDistance(spot, p))) * 6371;
+    const cap = s => s.replace(/^t/, 'T');
+
+    function overlay({ g, path }) {
+      if (!glow) return;
+      g.beginPath(); path(glow.feature);
+      if (glow.found) {
+        g.fillStyle = 'rgba(53, 208, 127, 0.9)'; g.fill();
+        g.strokeStyle = '#0c6b3c'; g.lineWidth = 2; g.stroke();
+      } else {
+        const beat = 0.45 + 0.45 * Math.sin(performance.now() / 180);
+        g.fillStyle = `rgba(255, 210, 63, ${(0.25 + 0.4 * beat).toFixed(2)})`; g.fill();
+        g.strokeStyle = '#ffd23f'; g.lineWidth = 3; g.stroke();
+      }
+    }
+
+    function ask() {
+      target = list[idx];
+      tries = 0; hints = 0; lastKm = null; glow = null; locked = false;
+      showBar(`🧭 ${idx + 1} of ${ROUND}: Find <b>${target.the}</b>!`, '💡 Hint', true);
+      App.setIntercept(() => true);
+    }
+
+    function start() {
+      if (!places && !prepare()) return toast('🌍 The globe is still loading. Try again in a moment.');
+      clearTimeout(timer);
+      const fresh = shuffle(places.filter(p => !state.found[p.code])), seen = shuffle(places.filter(p => state.found[p.code]));
+      list = [...fresh, ...seen].slice(0, ROUND);
+      idx = 0; stars = 0; on = true;
+      card.hidden = true;
+      home.classList.add('mode-findit');
+      Globe.setOverlay(overlay);
+      Globe.setTicker(() => !!glow && !glow.found); // keep redrawing while a hint is flashing
+      Globe.setTapHook(tapped);
+      Globe.setPlain(true);
+      Globe.hold(true);
+      Globe.zoomOut();
+      ask();
+    }
+
+    function tapped(spot) {
+      if (!on || locked || !target) return;
+      const shape = Globe.landAt(spot);
+      if (shape === target.feature) return correct();
+      tries++;
+      const km = kmTo(spot);
+      const heat = km < 800 ? '🔥 Boiling hot!' : km < 2500 ? '♨️ Hot!' : km < 5000 ? '🌤️ Warm.' : km < 9000 ? '❄️ Cold.' : '🧊 Freezing!';
+      const trend = lastKm === null ? '' : km < lastKm ? ' Getting warmer!' : ' Getting colder.';
+      lastKm = km;
+      const what = shape ? `That is ${NICE[shape.properties.name] || shape.properties.name}.` : 'That is the sea.';
+      toast(`${what} ${heat}${trend}`);
+      if (tries === 3) { const b = $('#mode-action'); b.classList.add('nudge'); setTimeout(() => b.classList.remove('nudge'), 3000); }
+    }
+
+    function correct() {
+      locked = true;
+      const won = tries === 0 && hints === 0 ? 3 : tries <= 2 && hints <= 1 ? 2 : 1;
+      stars += won;
+      state.found[target.code] = 1; save();
+      glow = { feature: target.feature, found: true };
+      Globe.goTo(target.middle, 1.5, 700);
+      showBar(`✅ You found <b>${target.the}</b>! ${'⭐'.repeat(won)}`);
+      App.setIntercept(() => true);
+      timer = setTimeout(() => { idx++; if (idx < ROUND) { Globe.zoomOut(); ask(); } else finish(); }, 1900);
+    }
+
+    function hint() {
+      if (!on || locked || !target) return;
+      hints++;
+      if (hints === 1) return toast(`💡 ${cap(target.the)} is in ${target.where}`);
+      if (hints === 2) { Globe.goTo(target.middle, 1.15, 900); return toast('💡 Look on this side of the world!'); }
+      glow = { feature: target.feature };
+      Globe.goTo(target.middle, 1.8, 900);
+      toast('💡 It is flashing. Tap it!');
+    }
+
+    function finish() {
+      target = null; glow = null;
+      Globe.zoomOut();
+      const all = places.filter(p => state.found[p.code]).length;
+      showBar('🧭 <b>Great exploring!</b>');
+      App.setIntercept(() => true);
+      card.innerHTML = `
+        <p>🧭 You found <b>${ROUND} countries</b> and won <b>${stars} of ${ROUND * 3} stars</b> ⭐</p>
+        <p>🌍 So far you have found <b>${all} of ${places.length}</b> countries on the globe.</p>
+        <div class="trip-buttons">
+          <button class="big-btn drive" id="find-again">🧭 Play again</button>
+          <button class="big-btn next" id="find-done">Done</button>
+        </div>`;
+      card.hidden = false;
+    }
+
+    function stop() {
+      clearTimeout(timer);
+      on = false; target = null; glow = null;
+      card.hidden = true;
+      home.classList.remove('mode-findit');
+      Globe.setOverlay(null); Globe.setTicker(null); Globe.setTapHook(null); Globe.setPlain(false); Globe.hold(false);
+      Globe.zoomOut();
+      hideBar();
+    }
+
+    return { start, stop, hint, active: () => on };
+  })();
+
+  // =====================================================================
   //  COUNTRY CARDS
   // =====================================================================
   function renderCards() {
@@ -397,8 +549,10 @@
     if (t.id === 'open-fly') return Trip.start();
     if (t.id === 'open-mission') return Mission.start();
     if (t.id === 'open-cards') { renderCards(); return App.openSheet('#cards'); }
-    if (t.id === 'mode-quit') { if (Trip.active()) Trip.stop(); else Mission.quit(); return; }
-    if (t.id === 'mode-action') return Trip.active() ? Trip.action() : Mission.hint();
+    if (t.id === 'open-find' || t.id === 'find-again') return FindIt.start();
+    if (t.id === 'find-done') return FindIt.stop();
+    if (t.id === 'mode-quit') { if (FindIt.active()) FindIt.stop(); else if (Trip.active()) Trip.stop(); else Mission.quit(); return; }
+    if (t.id === 'mode-action') return FindIt.active() ? FindIt.hint() : Trip.active() ? Trip.action() : Mission.hint();
     if (t.id === 'trip-again') return Trip.start();
     if (t.id === 'trip-visit') return Trip.visit();
     if (t.dataset.mchoice) return Mission.answer(+t.dataset.mchoice, t);
