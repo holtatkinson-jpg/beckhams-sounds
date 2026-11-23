@@ -690,6 +690,35 @@ h1 {
 }
 .stickers span.got { filter: none; border: 2px solid var(--sun); background: rgba(255, 210, 63, 0.2); }
 
+/* ---------- say it like a local ---------- */
+.say-row { display: flex; align-items: center; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.say-row::-webkit-scrollbar { display: none; }
+.say-row[hidden] { display: none; }
+.say-label { flex: 0 0 auto; font-size: 17px; font-weight: 900; color: var(--soft); white-space: nowrap; }
+.say {
+  flex: 0 0 auto;
+  min-height: 52px;
+  padding: 5px 16px;
+  border-radius: 18px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  text-align: left;
+}
+.say b { display: block; font-size: 18px; font-weight: 900; line-height: 1.2; }
+.say small { display: block; font-size: 13px; font-weight: 700; color: var(--soft); }
+.say:active { transform: scale(0.96); }
+.say.on, .say-mini.on { background: rgba(255, 210, 63, 0.25); border-color: var(--sun); }
+.say-mini {
+  width: 40px;
+  height: 40px;
+  margin-left: 4px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--line);
+  font-size: 18px;
+  vertical-align: middle;
+}
+
 /* ---------- toast ---------- */
 .toast {
   position: fixed;

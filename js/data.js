@@ -501,6 +501,28 @@
   };
   for (const c of window.COUNTRIES) Object.assign(c, FACTS[c.id]);
 
+  // Words spoken by native speakers, for the "Say it" buttons.
+  // w = how it is written, en = what it means, say = how it sounds when the letters are unfamiliar.
+  const word = (key, w, en, say) => ({ w, en, say, file: 'audio/words/' + key + '.m4a', once: true });
+  const EN_US = [word('en-us-hello', 'Hello', 'hello'), word('en-us-police', 'Police', 'police'),
+    word('en-us-ambulance', 'Ambulance', 'ambulance'), word('en-us-fire', 'Firetruck', 'fire truck')];
+  window.WORDS = {
+    us: EN_US,
+    ca: [EN_US[0], word('fr-hello', 'Bonjour', 'hello in French'), EN_US[1], EN_US[2], EN_US[3]],
+    mx: [word('es-hello', 'Hola', 'hello'), word('es-police', 'Policía', 'police'), word('es-ambulance', 'Ambulancia', 'ambulance'), word('es-fire', 'Bombero', 'firefighter')],
+    br: [word('pt-hello', 'Olá', 'hello'), word('pt-police', 'Polícia', 'police'), word('pt-ambulance', 'Ambulância', 'ambulance'), word('pt-fire', 'Bombeiro', 'firefighter')],
+    gb: [word('en-uk-hello', 'Hello', 'hello'), word('en-uk-police', 'Police', 'police'), word('en-uk-ambulance', 'Ambulance', 'ambulance'), word('en-uk-fire', 'Fire engine', 'fire engine')],
+    fr: [word('fr-hello', 'Bonjour', 'hello'), word('fr-police', 'Police', 'police'), word('fr-ambulance', 'Ambulance', 'ambulance'), word('fr-fire', 'Pompier', 'firefighter')],
+    de: [word('de-hello', 'Hallo', 'hello'), word('de-police', 'Polizei', 'police'), word('de-ambulance', 'Krankenwagen', 'ambulance'), word('de-fire', 'Feuerwehr', 'fire brigade')],
+    it: [word('it-hello', 'Ciao', 'hello'), word('it-police', 'Polizia', 'police'), word('it-ambulance', 'Ambulanza', 'ambulance'), word('it-fire', 'Un pompiere', 'a firefighter')],
+    jp: [word('ja-hello', 'こんにちは', 'hello', 'Konnichiwa'), word('ja-police', '警察', 'police', 'Keisatsu'),
+      word('ja-ambulance', '救急車', 'ambulance', 'Kyūkyūsha'), word('ja-fire', '消防士', 'firefighter', 'Shōbōshi')],
+    au: [word('en-au-hello', 'Hello', 'hello')],
+    fi: [word('fi-hello', 'Hei', 'hello')],
+    se: [word('sv-hello', 'Hej', 'hello')],
+    nl: [word('nl-hello', 'Hallo', 'hello'), word('nl-fire', 'Brandweer', 'fire brigade'), word('nl-ambulance', 'Ambulance', 'ambulance')],
+  };
+
   window.SERVICES = [
     { id: 'fire', emoji: '🚒', word: 'Fire' },
     { id: 'police', emoji: '🚓', word: 'Police' },

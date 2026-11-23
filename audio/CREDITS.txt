@@ -62,3 +62,159 @@ netherlands-fire-passing.m4a
   From "Brandweerwagens passeren met sirene" by GvNL-Steim Workshop (recorded by Robin Koek). CC BY 3.0.
   https://commons.wikimedia.org/wiki/File:Brandweerwagens_passeren_met_sirene_-_SoundCloud_-_GvNL-Steim_Workshop.ogg
   https://creativecommons.org/licenses/by/3.0/
+
+SPOKEN WORDS (audio/words)
+Each clip was trimmed, converted to AAC and adjusted in volume, and stays under the licence shown.
+Every original is at https://commons.wikimedia.org/wiki/File: followed by its name.
+
+words/en-us-hello.m4a
+  From "En-us-hello.ogg" by Dvortygirl. Public domain.
+  https://commons.wikimedia.org/wiki/File:En-us-hello.ogg
+
+words/en-us-police.m4a
+  From "En-us-police.ogg" by Dvortygirl. CC BY-SA 3.0.
+  https://commons.wikimedia.org/wiki/File:En-us-police.ogg
+
+words/en-us-ambulance.m4a
+  From "En-us-ambulance.ogg" by Dvortygirl. CC BY-SA 3.0.
+  https://commons.wikimedia.org/wiki/File:En-us-ambulance.ogg
+
+words/en-us-fire.m4a
+  From "LL-Q1860 (eng)-Flame, not lame-firetruck.wav" by Flame, not lame (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-firetruck.wav
+
+words/en-uk-hello.m4a
+  From "En-uk-hello.ogg" by Association Shtooka, Judith Franck. CC BY 3.0 US.
+  https://commons.wikimedia.org/wiki/File:En-uk-hello.ogg
+
+words/en-uk-police.m4a
+  From "En-uk-police.ogg" by Association Shtooka, Judith Franck. CC BY 3.0 US.
+  https://commons.wikimedia.org/wiki/File:En-uk-police.ogg
+
+words/en-uk-ambulance.m4a
+  From "LL-Q1860 (eng)-Wodencafe-ambulance.wav" by Wodencafe (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-ambulance.wav
+
+words/en-uk-fire.m4a
+  From "LL-Q1860 (eng)-Persent101-fire engine.wav" by Persent101 (Lingua Libre). CC BY-SA 4.0.
+  https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-fire_engine.wav
+
+words/en-au-hello.m4a
+  From "En-au-hello.ogg" by Commander Keane. CC BY-SA 4.0.
+  https://commons.wikimedia.org/wiki/File:En-au-hello.ogg
+
+words/fr-hello.m4a
+  From "LL-Q150 (fra)-Helenou66-bonjour.wav" by Helenou66 (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q150_(fra)-Helenou66-bonjour.wav
+
+words/fr-police.m4a
+  From "LL-Q150 (fra)-Poslovitch-police.wav" by Poslovitch (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q150_(fra)-Poslovitch-police.wav
+
+words/fr-ambulance.m4a
+  From "LL-Q150 (fra)-Poslovitch-ambulance.wav" by Poslovitch (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q150_(fra)-Poslovitch-ambulance.wav
+
+words/fr-fire.m4a
+  From "LL-Q150 (fra)-Poslovitch-pompier.wav" by Poslovitch (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q150_(fra)-Poslovitch-pompier.wav
+
+words/de-hello.m4a
+  From "LL-Q188 (deu)-Trypeds-Hallo.wav" by Trypeds (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q188_(deu)-Trypeds-Hallo.wav
+
+words/de-police.m4a
+  From "LL-Q188 (deu)-Sebastian Wallroth-Polizei.wav" by Sebastian Wallroth (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q188_(deu)-Sebastian_Wallroth-Polizei.wav
+
+words/de-ambulance.m4a
+  From "De-Krankenwagen.ogg" by Jeuwre. CC BY-SA 4.0.
+  https://commons.wikimedia.org/wiki/File:De-Krankenwagen.ogg
+
+words/de-fire.m4a
+  From "De-Feuerwehr.ogg" by Jeuwre. CC BY-SA 4.0.
+  https://commons.wikimedia.org/wiki/File:De-Feuerwehr.ogg
+
+words/it-hello.m4a
+  From "LL-Q652 (ita)-XANA000-ciao.wav" by XANA000 (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q652_(ita)-XANA000-ciao.wav
+
+words/it-police.m4a
+  From "LL-Q652 (ita)-Happypheasant-polizia.wav" by Happypheasant (Lingua Libre). CC BY-SA 4.0.
+  https://commons.wikimedia.org/wiki/File:LL-Q652_(ita)-Happypheasant-polizia.wav
+
+words/it-ambulance.m4a
+  From "LL-Q652 (ita)-Crunchy Cloaky Crackdown-ambulanza.wav" by Crunchy Cloaky Crackdown (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q652_(ita)-Crunchy_Cloaky_Crackdown-ambulanza.wav
+
+words/it-fire.m4a
+  From "It-un pompiere.ogg" by Marta Carbone, Association Shtooka. CC BY 3.0 US.
+  https://commons.wikimedia.org/wiki/File:It-un_pompiere.ogg
+
+words/es-hello.m4a
+  From "LL-Q1321 (spa)-CaroEspinoza-HOLA.wav" by CaroEspinoza (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q1321_(spa)-CaroEspinoza-HOLA.wav
+
+words/es-police.m4a
+  From "LL-Q1321 (spa)-Precision27-policía.wav" by Precision27 (Lingua Libre). CC BY 4.0.
+  https://commons.wikimedia.org/wiki/File:LL-Q1321_(spa)-Precision27-polic%C3%ADa.wav
+
+words/es-ambulance.m4a
+  From "LL-Q1321 (spa)-AdrianAbdulBaha-ambulancia.wav" by AdrianAbdulBaha (Lingua Libre). CC BY-SA 4.0.
+  https://commons.wikimedia.org/wiki/File:LL-Q1321_(spa)-AdrianAbdulBaha-ambulancia.wav
+
+words/es-fire.m4a
+  From "LL-Q1321 (spa)-AdrianAbdulBaha-bombero.wav" by AdrianAbdulBaha (Lingua Libre). CC BY-SA 4.0.
+  https://commons.wikimedia.org/wiki/File:LL-Q1321_(spa)-AdrianAbdulBaha-bombero.wav
+
+words/pt-hello.m4a
+  From "LL-Q5146 (por)-Nelson Ricardo 2500-olá.wav" by Nelson Ricardo 2500 (Lingua Libre). CC BY-SA 4.0.
+  https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-ol%C3%A1.wav
+
+words/pt-police.m4a
+  From "LL-Q5146 (por)-Nelson Ricardo 2500-polícia.wav" by Nelson Ricardo 2500 (Lingua Libre). CC BY-SA 4.0.
+  https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-pol%C3%ADcia.wav
+
+words/pt-ambulance.m4a
+  From "LL-Q5146 (por)-Nelson Ricardo 2500-ambulância.wav" by Nelson Ricardo 2500 (Lingua Libre). CC BY-SA 4.0.
+  https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-ambul%C3%A2ncia.wav
+
+words/pt-fire.m4a
+  From "LL-Q5146 (por)-Nelson Ricardo 2500-bombeiro.wav" by Nelson Ricardo 2500 (Lingua Libre). CC BY-SA 4.0.
+  https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-bombeiro.wav
+
+words/ja-hello.m4a
+  From "LL-Q5287 (jpn)-Fukujinzuke-こんにちは.wav" by Fukujinzuke (Lingua Libre). CC BY 4.0.
+  https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Fukujinzuke-%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF.wav
+
+words/ja-police.m4a
+  From "LL-Q5287 (jpn)-Fukujinzuke-警察.wav" by Fukujinzuke (Lingua Libre). CC BY 4.0.
+  https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Fukujinzuke-%E8%AD%A6%E5%AF%9F.wav
+
+words/ja-ambulance.m4a
+  From "LL-Q5287 (jpn)-CKali-救急車.wav" by CKali (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-CKali-%E6%95%91%E6%80%A5%E8%BB%8A.wav
+
+words/ja-fire.m4a
+  From "LL-Q5287 (jpn)-葵心-消防士.wav" by 葵心 (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-%E8%91%B5%E5%BF%83-%E6%B6%88%E9%98%B2%E5%A3%AB.wav
+
+words/nl-hello.m4a
+  From "Nl-hallo.ogg" by GerardM. CC BY-SA 3.0.
+  https://commons.wikimedia.org/wiki/File:Nl-hallo.ogg
+
+words/nl-fire.m4a
+  From "LL-Q7411 (nld)-Vanhoeckes-brandweer.wav" by Vanhoeckes (Lingua Libre). CC0.
+  https://commons.wikimedia.org/wiki/File:LL-Q7411_(nld)-Vanhoeckes-brandweer.wav
+
+words/nl-ambulance.m4a
+  From "Nl-ambulance.ogg" by Marcel Coenders. CC BY-SA 3.0.
+  https://commons.wikimedia.org/wiki/File:Nl-ambulance.ogg
+
+words/sv-hello.m4a
+  From "Sv-hej.ogg" by M. Kihlstedt, N. Vion. CC BY 2.0 FR.
+  https://commons.wikimedia.org/wiki/File:Sv-hej.ogg
+
+words/fi-hello.m4a
+  From "Fi-hei.ogg" by Vassilik. CC BY-SA 3.0.
+  https://commons.wikimedia.org/wiki/File:Fi-hei.ogg

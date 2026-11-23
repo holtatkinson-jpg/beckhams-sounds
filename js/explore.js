@@ -533,7 +533,7 @@
         <ul>
           <li>🏛️ Capital: <b>${c.capital}</b></li>
           <li>🌍 ${c.continent}</li>
-          <li>👋 "${c.hello}" <small>(${c.language})</small></li>
+          <li>👋 "${c.hello}" <small>(${c.language})</small>${(window.WORDS || {})[c.id] ? ` <button class="say-mini" data-say="${c.id}/0" aria-label="Hear hello">🔊</button>` : ''}</li>
           <li>${calls}</li>
         </ul>
         <div class="stickers">${st.map(([icon, label, got]) => `<span class="${got ? 'got' : ''}" title="${label}" aria-label="${label}${got ? ' (collected)' : ''}">${icon}</span>`).join('')}</div>

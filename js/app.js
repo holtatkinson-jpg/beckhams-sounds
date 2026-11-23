@@ -152,7 +152,23 @@
         <span class="t"><b>${svc.label}</b><small>📞 ${svc.call}</small></span>
       </button>`;
     }).join('');
+    const words = (window.WORDS || {})[cur.id] || [];
+    $('#say-row').hidden = !words.length;
+    $('#say-row').innerHTML = '<span class="say-label">🗣️ Say it:</span>' + words.map((x, i) =>
+      `<button class="say" data-say="${cur.id}/${i}"><b>${x.w}</b><small>${x.say ? x.say + ' · ' : ''}${x.en}</small></button>`).join('');
     renderService();
+  }
+
+  // play one word spoken by a native speaker
+  function sayWord(ref, el) {
+    const [cid, i] = ref.split('/');
+    const item = ((window.WORDS || {})[cid] || [])[+i];
+    if (!item) return;
+    endDrive();
+    Sirens.stop(); // first, so the old sound's "finished" tidy-up cannot switch this button's light off
+    document.querySelectorAll('[data-say].on').forEach(b => b.classList.remove('on'));
+    el.classList.add('on');
+    Sirens.play(item, () => el.classList.remove('on'));
   }
 
   function renderService() {
@@ -199,6 +215,11 @@
         <span>Licence: ${c.licence}</span>
         <span>${c.url}</span>
       </div>`).join('')}
+      <p>The spoken words behind the "🗣️ Say it" buttons were recorded by volunteers and shared on Wikimedia Commons, most of them through the Lingua Libre project. Each clip was trimmed, converted to AAC and adjusted in volume, and stays under the licence shown. Every file is at commons.wikimedia.org/wiki/File: followed by its name.</p>
+      ${(window.WORD_CREDITS || []).map(g => `<div class="credit">
+        <b>Spoken words: ${g.lang}</b>
+        ${g.items.map(i => `<span>"${i.title}" by ${i.by} (${i.licence})</span>`).join('')}
+      </div>`).join('')}
       <p>The globe is drawn with D3 and TopoJSON using Natural Earth map data.</p>`;
   }
 
@@ -229,6 +250,7 @@
     if (!t) return;
     Sirens.unlock();
     if (t.dataset.fav) return toggleFav(t.dataset.fav);
+    if (t.dataset.say) return sayWord(t.dataset.say, t);
     if (t.dataset.play) {
       if (t.classList.contains('pad')) { lastKey = t.dataset.play; endDrive(); }
       return playKey(t.dataset.play);
