@@ -175,6 +175,37 @@
       },
     },
     {
+      id: 'ar', iso: '032', name: 'Argentina', flag: '🇦🇷', pin: [-65, -35],
+      fact: 'In Argentina every helper has its own light colour: blue for police, red for firefighters and green for ambulances.',
+      services: {
+        fire: {
+          label: 'Bomberos', call: '100',
+          livery: { body: RED, band: [WHITE, '#f6e500'], pattern: 'stripe', lights: [RED, RED], text: 'BOMBEROS', textColor: WHITE },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wailSlow),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+            snd('horn', 'Air Horn', '📯', 'HOOONK!', R.airHorn),
+          ],
+        },
+        police: {
+          label: 'Policía', call: '911',
+          livery: { body: WHITE, band: ['#12357a', '#6fb7ff'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'POLICÍA', textColor: '#12357a' },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+          ],
+        },
+        ems: {
+          label: 'Ambulancia', call: '107',
+          livery: { body: WHITE, band: ['#1f9d55'], pattern: 'stripe', lights: ['#22c55e', '#22c55e'], text: 'AMBULANCIA', textColor: '#1f9d55', symbol: '#1f9d55' },
+          sounds: [
+            snd('hilo', 'Hi-Lo', '🎵', 'Ni-no, ni-no', R.hiLo),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+          ],
+        },
+      },
+    },
+    {
       id: 'gb', iso: '826', name: 'United Kingdom', flag: '🇬🇧', pin: [-2, 54],
       fact: 'British emergency vehicles wear bright checks and flash blue lights. People say sirens go "Nee-Naw!"',
       services: {
@@ -302,6 +333,97 @@
       },
     },
     {
+      id: 'es', iso: '724', name: 'Spain', flag: '🇪🇸', pin: [-3.7, 40],
+      fact: 'In Spain, children say a siren goes "Ni-no, ni-no!"',
+      services: {
+        fire: {
+          label: 'Bomberos', call: '112',
+          livery: { body: RED, band: [WHITE, '#f6e500'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'BOMBEROS', textColor: WHITE },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wailSlow),
+            snd('horn', 'Air Horn', '📯', 'HOOONK!', R.airHorn),
+          ],
+        },
+        police: {
+          label: 'Policía', call: '112',
+          livery: { body: WHITE, band: ['#12357a', WHITE], pattern: 'checks', lights: [BLUE, BLUE], text: 'POLICÍA', textColor: '#12357a' },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+          ],
+        },
+        ems: {
+          label: 'Ambulancia', call: '112',
+          livery: { body: '#ffd21f', band: ['#ff5a1f'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'AMBULANCIA', textColor: '#c81e1e', symbol: '#1f5fd0' },
+          sounds: [
+            snd('nino', 'Ni-No', '🎵', 'Ni-no, ni-no', R.hiLo),
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wailSlow),
+          ],
+        },
+      },
+    },
+    {
+      id: 'ch', iso: '756', name: 'Switzerland', flag: '🇨🇭', pin: [8.2, 46.8],
+      fact: 'Switzerland has three numbers to remember: 117 for police, 118 for fire and 144 for an ambulance.',
+      services: {
+        fire: {
+          label: 'Feuerwehr', call: '118',
+          livery: { body: RED, band: [WHITE, '#f6e500'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'FEUERWEHR', textColor: WHITE },
+          sounds: [
+            snd('air', 'Two-Tone Air Horn', '📯', 'Taa-tüü, taa-tüü', tones([[277, 0.9], [415, 0.9]], { wave: 'sawtooth', lp: 2200, peak: 800, gain: 0.34 })),
+            snd('horn', 'Two-Tone Horn', '🎶', 'Ta-tü, ta-tü', tones([[277, 0.75], [415, 0.75]], { wave: 'sawtooth', lp: 2600, gain: 0.32 })),
+          ],
+        },
+        police: {
+          label: 'Polizei', call: '117',
+          livery: { body: WHITE, band: ['#ff6a13', '#ff6a13'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'POLIZEI', textColor: '#1c3f94' },
+          sounds: [
+            snd('horn', 'Two-Tone Horn', '🎶', 'Ta-tü, ta-tü', tones([[277, 0.75], [415, 0.75]], { wave: 'sawtooth', lp: 2800, gain: 0.32 })),
+          ],
+        },
+        ems: {
+          label: 'Ambulanz', call: '144',
+          livery: { body: '#e9f000', band: [RED, WHITE], pattern: 'stripe', lights: [BLUE, BLUE], text: 'AMBULANZ', textColor: RED, symbol: '#1f5fd0' },
+          sounds: [
+            snd('horn', 'Two-Tone Horn', '🎶', 'Ta-tü, ta-tü', tones([[277, 0.75], [415, 0.75]], { wave: 'sawtooth', lp: 2600, gain: 0.32 })),
+          ],
+        },
+      },
+    },
+    {
+      id: 'no', iso: '578', name: 'Norway', flag: '🇳🇴', pin: [9, 61],
+      fact: 'In Norway the numbers almost count in a row: 110 for fire, 112 for police and 113 for an ambulance.',
+      services: {
+        fire: {
+          label: 'Brannvesen', call: '110',
+          livery: { body: RED, band: ['#e9f000', RED], pattern: 'checks', lights: [BLUE, BLUE], text: 'BRANN', textColor: WHITE },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+            snd('horn', 'Air Horn', '📯', 'HOOONK!', R.airHorn),
+          ],
+        },
+        police: {
+          label: 'Politi', call: '112',
+          livery: { body: WHITE, band: ['#16181d', '#e9f000'], pattern: 'checks', lights: [BLUE, BLUE], text: 'POLITI', textColor: '#16181d' },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+            snd('hilo', 'Hi-Lo', '🎵', 'Dee-doo', R.hiLo),
+          ],
+        },
+        ems: {
+          label: 'Ambulanse', call: '113',
+          livery: { body: '#e9f000', band: ['#1f9d55', '#e9f000'], pattern: 'checks', lights: [BLUE, BLUE], text: 'AMBULANSE', textColor: '#14532d', symbol: '#1f5fd0' },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+            snd('hilo', 'Hi-Lo', '🎵', 'Dee-doo', R.hiLo),
+          ],
+        },
+      },
+    },
+    {
       id: 'jp', iso: '392', name: 'Japan', flag: '🇯🇵', pin: [138.5, 36.5],
       fact: 'Japanese ambulances sing "Pii-Poo, Pii-Poo" and fire engines ring a bell: "Kan! Kan!"',
       services: {
@@ -335,6 +457,96 @@
       },
     },
     {
+      id: 'in', iso: '356', name: 'India', flag: '🇮🇳', pin: [79, 22],
+      fact: 'India has one number for every emergency: 112. "Namaste" is how you say hello in Hindi.',
+      services: {
+        fire: {
+          label: 'Fire Service', call: '112',
+          livery: { body: RED, band: ['#f6e500'], pattern: 'stripe', lights: [RED, RED], text: 'FIRE', textColor: WHITE },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wailSlow),
+            snd('horn', 'Air Horn', '📯', 'HOOONK!', R.airHorn),
+          ],
+        },
+        police: {
+          label: 'Police', call: '112',
+          livery: { body: WHITE, band: ['#1c3f94', RED], pattern: 'stripe', lights: [RED, BLUE], text: 'POLICE', textColor: '#1c3f94' },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+          ],
+        },
+        ems: {
+          label: 'Ambulance', call: '112',
+          livery: { body: WHITE, band: [RED, '#1c3f94'], pattern: 'stripe', lights: [RED, BLUE], text: 'AMBULANCE', textColor: RED, symbol: '#1f5fd0' },
+          sounds: [
+            snd('hilo', 'Hi-Lo', '🎵', 'Dee-doo', R.hiLo),
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wailSlow),
+          ],
+        },
+      },
+    },
+    {
+      id: 'cn', iso: '156', name: 'China', flag: '🇨🇳', pin: [104, 35],
+      fact: 'In China you call 119 for the fire brigade, so the 9th of November (11/9) is Fire Safety Day.',
+      services: {
+        fire: {
+          label: '消防 · Fire', call: '119',
+          livery: { body: RED, band: [WHITE], pattern: 'stripe', lights: [RED, RED], text: '消防', textColor: WHITE },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wailSlow),
+            snd('horn', 'Air Horn', '📯', 'HOOONK!', R.airHorn),
+          ],
+        },
+        police: {
+          label: '警察 · Police', call: '110',
+          livery: { body: WHITE, band: ['#1c3f94'], pattern: 'stripe', lights: [RED, BLUE], text: '警察', textColor: '#1c3f94' },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+          ],
+        },
+        ems: {
+          label: '急救 · Ambulance', call: '120',
+          livery: { body: WHITE, band: [RED], pattern: 'stripe', lights: [BLUE, BLUE], text: '急救', textColor: RED, symbol: '#1f5fd0' },
+          sounds: [
+            snd('twotone', 'Two-Tone', '🎵', 'Dee-doo, dee-doo', tones([[680, 0.8], [520, 0.8]])),
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wailSlow),
+          ],
+        },
+      },
+    },
+    {
+      id: 'kr', iso: '410', name: 'South Korea', flag: '🇰🇷', pin: [127.8, 36.3],
+      fact: 'In Korea, children say a siren goes "Ppi-ppo, ppi-ppo!"',
+      services: {
+        fire: {
+          label: '소방 · Fire', call: '119',
+          livery: { body: RED, band: [WHITE, '#f6e500'], pattern: 'stripe', lights: [RED, RED], text: '119', textColor: WHITE },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('horn', 'Air Horn', '📯', 'HOOONK!', R.airHorn),
+          ],
+        },
+        police: {
+          label: '경찰 · Police', call: '112',
+          livery: { body: WHITE, band: ['#1c3f94', '#f6c400'], pattern: 'stripe', lights: [RED, BLUE], text: '경찰', textColor: '#1c3f94' },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+          ],
+        },
+        ems: {
+          label: '구급 · Ambulance', call: '119',
+          livery: { body: WHITE, band: [RED, '#f6e500'], pattern: 'stripe', lights: [RED, RED], text: '119', textColor: RED, symbol: '#1f9d55' },
+          sounds: [
+            snd('ppippo', 'Ppi-Ppo', '🎶', 'Ppi-ppo, ppi-ppo', tones([[880, 0.5], [700, 0.5]])),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+          ],
+        },
+      },
+    },
+    {
       id: 'au', iso: '036', name: 'Australia', flag: '🇦🇺', pin: [134, -25],
       fact: 'In Australia you call "Triple Zero" (000) for help.',
       services: {
@@ -363,6 +575,99 @@
             snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
             snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
             snd('hilo', 'Hi-Lo', '🎵', 'Dee-doo', R.hiLo),
+          ],
+        },
+      },
+    },
+    {
+      id: 'nz', iso: '554', name: 'New Zealand', flag: '🇳🇿', pin: [172.5, -42],
+      fact: 'In New Zealand you call 111 for help. "Kia ora" is how you say hello in Māori.',
+      services: {
+        fire: {
+          label: 'Fire & Emergency', call: '111',
+          livery: { body: RED, band: ['#f6e500', RED], pattern: 'checks', lights: [RED, RED], text: 'FIRE', textColor: WHITE },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+            snd('horn', 'Air Horn', '📯', 'HOOONK!', R.airHorn),
+          ],
+        },
+        police: {
+          label: 'Police', call: '111',
+          livery: { body: WHITE, band: ['#1f5fd0', '#e9f000'], pattern: 'checks', lights: [RED, BLUE], text: 'POLICE', textColor: '#1c3f94' },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+          ],
+        },
+        ems: {
+          label: 'Ambulance', call: '111',
+          livery: { body: WHITE, band: ['#1f9d55', '#e9f000'], pattern: 'checks', lights: [RED, RED], text: 'AMBULANCE', textColor: '#14532d', symbol: '#1f9d55' },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+            snd('hilo', 'Hi-Lo', '🎵', 'Dee-doo', R.hiLo),
+          ],
+        },
+      },
+    },
+    {
+      id: 'za', iso: '710', name: 'South Africa', flag: '🇿🇦', pin: [24, -30],
+      fact: 'South Africa has three capital cities and 12 official languages. "Sawubona" is hello in Zulu.',
+      services: {
+        fire: {
+          label: 'Fire & Rescue', call: '10177',
+          livery: { body: RED, band: ['#f6e500'], pattern: 'stripe', lights: [RED, RED], text: 'FIRE', textColor: WHITE },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wailSlow),
+            snd('horn', 'Air Horn', '📯', 'HOOONK!', R.airHorn),
+          ],
+        },
+        police: {
+          label: 'Police', call: '10111',
+          livery: { body: WHITE, band: ['#1c3f94', '#f6c400'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'POLICE', textColor: '#1c3f94' },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+          ],
+        },
+        ems: {
+          label: 'Ambulance', call: '10177',
+          livery: { body: WHITE, band: [RED, '#f6e500'], pattern: 'stripe', lights: [RED, RED], text: 'AMBULANCE', textColor: RED, symbol: '#1f5fd0' },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+            snd('hilo', 'Hi-Lo', '🎵', 'Dee-doo', R.hiLo),
+          ],
+        },
+      },
+    },
+    {
+      id: 'eg', iso: '818', name: 'Egypt', flag: '🇪🇬', pin: [30, 26.5],
+      fact: 'In Egypt the ambulance number is as easy as 1-2-3: you call 123!',
+      services: {
+        fire: {
+          label: 'المطافئ · Fire', call: '180',
+          livery: { body: RED, band: [WHITE], pattern: 'stripe', lights: [RED, RED], text: 'FIRE', textColor: WHITE },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wailSlow),
+            snd('horn', 'Air Horn', '📯', 'HOOONK!', R.airHorn),
+          ],
+        },
+        police: {
+          label: 'الشرطة · Police', call: '122',
+          livery: { body: WHITE, band: ['#1c3f94'], pattern: 'split', lights: [BLUE, BLUE], text: 'POLICE', textColor: '#1c3f94' },
+          sounds: [
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wail),
+            snd('yelp', 'Yelp', '⚡', 'Wup-wup-wup', R.yelp),
+          ],
+        },
+        ems: {
+          label: 'الإسعاف · Ambulance', call: '123',
+          livery: { body: WHITE, band: ['#ff7a1a'], pattern: 'stripe', lights: [BLUE, BLUE], text: 'AMBULANCE', textColor: '#d9480f', symbol: '#1f5fd0' },
+          sounds: [
+            snd('hilo', 'Hi-Lo', '🎵', 'Dee-doo', R.hiLo),
+            snd('wail', 'Wail', '🌊', 'Weeee-ooooo', R.wailSlow),
           ],
         },
       },
@@ -498,6 +803,16 @@
     fi: { capital: 'Helsinki', city: [24.94, 60.17], continent: 'Europe', language: 'Finnish', hello: 'Hei', tz: 'Europe/Helsinki' },
     se: { capital: 'Stockholm', city: [18.07, 59.33], continent: 'Europe', language: 'Swedish', hello: 'Hej', tz: 'Europe/Stockholm' },
     nl: { capital: 'Amsterdam', city: [4.9, 52.37], continent: 'Europe', language: 'Dutch', hello: 'Hallo', tz: 'Europe/Amsterdam' },
+    ar: { capital: 'Buenos Aires', city: [-58.38, -34.6], continent: 'South America', language: 'Spanish', hello: 'Hola', tz: 'America/Argentina/Buenos_Aires' },
+    es: { capital: 'Madrid', city: [-3.7, 40.42], continent: 'Europe', language: 'Spanish', hello: 'Hola', tz: 'Europe/Madrid' },
+    ch: { capital: 'Bern', city: [7.45, 46.95], continent: 'Europe', language: 'Swiss German', hello: 'Grüezi', tz: 'Europe/Zurich' },
+    no: { capital: 'Oslo', city: [10.75, 59.91], continent: 'Europe', language: 'Norwegian', hello: 'Hei', tz: 'Europe/Oslo' },
+    in: { capital: 'New Delhi', city: [77.21, 28.61], continent: 'Asia', language: 'Hindi', hello: 'Namaste', tz: 'Asia/Kolkata' },
+    cn: { capital: 'Beijing', city: [116.4, 39.9], continent: 'Asia', language: 'Mandarin Chinese', hello: 'Nǐ hǎo', tz: 'Asia/Shanghai' },
+    kr: { capital: 'Seoul', city: [126.98, 37.57], continent: 'Asia', language: 'Korean', hello: 'Annyeonghaseyo', tz: 'Asia/Seoul' },
+    nz: { capital: 'Wellington', city: [174.78, -41.29], continent: 'Oceania', language: 'Māori', hello: 'Kia ora', tz: 'Pacific/Auckland' },
+    za: { capital: 'Pretoria', city: [28.19, -25.75], continent: 'Africa', language: 'Zulu', hello: 'Sawubona', tz: 'Africa/Johannesburg' },
+    eg: { capital: 'Cairo', city: [31.24, 30.04], continent: 'Africa', language: 'Arabic', hello: 'Ahlan', tz: 'Africa/Cairo' },
   };
   for (const c of window.COUNTRIES) Object.assign(c, FACTS[c.id]);
 
@@ -520,6 +835,8 @@
     au: [word('en-au-hello', 'Hello', 'hello')],
     fi: [word('fi-hello', 'Hei', 'hello')],
     se: [word('sv-hello', 'Hej', 'hello')],
+    es: [word('es-hello', 'Hola', 'hello'), word('es-police', 'Policía', 'police'), word('es-ambulance', 'Ambulancia', 'ambulance'), word('es-fire', 'Bombero', 'firefighter')],
+    ar: [word('es-hello', 'Hola', 'hello'), word('es-police', 'Policía', 'police'), word('es-ambulance', 'Ambulancia', 'ambulance'), word('es-fire', 'Bombero', 'firefighter')],
     nl: [word('nl-hello', 'Hallo', 'hello'), word('nl-fire', 'Brandweer', 'fire brigade'), word('nl-ambulance', 'Ambulance', 'ambulance')],
   };
 
